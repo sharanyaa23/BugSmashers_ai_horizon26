@@ -5,9 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Urban Navigator AI - Dashboard</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="config.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -18,31 +17,44 @@
                         "primary": "#ec5b13",
                         "background-light": "#f8f6f6",
                         "background-dark": "#020617",
-                        "card-dark": "#1e293b",
+                        "card-dark": "#1E293B",
+                        "accent-orange": "#F59E0B",
+                        "accent-red": "#EF4444",
                         "nav-dark": "#334155",
                     },
                     fontFamily: {
                         "display": ["Public Sans", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
                 },
             },
         }
     </script>
 <style>
-        body { font-family: 'Public Sans', sans-serif; }
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .heatmap-overlay {
+            background: radial-gradient(circle at 30% 40%, rgba(236, 91, 19, 0.4) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(34, 197, 94, 0.3) 0%, transparent 35%),
+                        radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.5) 0%, transparent 50%);
+        }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
 <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
-<div class="layout-container flex h-full grow flex-col">
 <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-nav-dark px-10 py-3 sticky top-0 z-50 shadow-sm">
 <div class="flex items-center gap-4 text-slate-900 dark:text-white">
 <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
 <span class="material-symbols-outlined">location_city</span>
 </div>
-<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
+<h2 class="text-slate-900 dark:text-white text-base font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
 </div>
 <div class="flex flex-1 justify-end gap-8">
 <nav class="flex items-center gap-6">
@@ -59,220 +71,214 @@
 <button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
 <span class="material-symbols-outlined">settings</span>
 </button>
-<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary text-white hover:opacity-90 transition-all">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
+<a class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary text-white hover:opacity-90 transition-all font-semibold text-sm" href="route_planner.html">Route Planner</a>
 </div>
 </div>
 </header>
-<main class="flex-1 px-4 lg:px-20 py-8 max-w-[1440px] mx-auto w-full">
-<div class="mb-8">
-<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Dashboard Overview</h1>
-<p class="text-slate-500 dark:text-slate-400 text-base font-normal">AI-powered predictive mobility assistant for your daily commute.</p>
+<main class="flex-1">
+<section class="relative px-6 lg:px-20 py-16 lg:py-24 overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-8 z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider w-fit">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                            AI-Powered Mobility
+                        </div>
+<div class="flex flex-col gap-4">
+<h1 class="text-4xl lg:text-6xl font-black leading-tight tracking-tight">
+                                Urban Navigator AI
+                            </h1>
+<p class="text-2xl font-semibold text-primary">
+                                Predict traffic before it happens.
+                            </p>
+<p class="text-lg text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">
+                                An AI-powered predictive mobility platform that forecasts traffic congestion, recommends optimal departure times, and helps you find parking faster in Maharashtra's busiest hubs.
+                            </p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Traffic Level</p>
-<span class="material-symbols-outlined text-red-500">traffic</span>
-</div>
-<p class="text-red-500 tracking-tight text-3xl font-bold leading-tight">High</p>
-<div class="flex items-center gap-1 mt-2">
-<span class="material-symbols-outlined text-xs text-red-500">trending_up</span>
-<p class="text-red-500 text-xs font-semibold uppercase">+12% from avg</p>
-</div>
-</div>
-<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Est. Travel Time</p>
-<span class="material-symbols-outlined text-primary">schedule</span>
-</div>
-<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">52 min</p>
-<div class="flex items-center gap-1 mt-2">
-<span class="material-symbols-outlined text-xs text-green-500">trending_down</span>
-<p class="text-green-500 text-xs font-semibold uppercase">-5% optimized</p>
-</div>
-</div>
-<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Best Departure</p>
-<span class="material-symbols-outlined text-blue-400">rocket_launch</span>
-</div>
-<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">08:03 AM</p>
-<p class="text-slate-400 text-xs font-medium mt-2">Predicted low congestion window</p>
-</div>
-<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between mb-2">
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Parking Availability</p>
-<span class="material-symbols-outlined text-emerald-400">local_parking</span>
-</div>
-<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">61%</p>
-<div class="flex items-center gap-1 mt-2 w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[61%]"></div>
+<div class="flex flex-wrap gap-4">
+<a class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg shadow-primary/20 transition-all" href="route_planner.html">
+                                Plan Your Route
+                            </a>
+<a class="border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 px-8 py-4 rounded-xl text-lg font-bold transition-all" href="#features">
+                                View Features
+                            </a>
 </div>
 </div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-gradient-to-tr from-primary/20 to-accent-red/20 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+<div class="relative bg-slate-200 dark:bg-card-dark rounded-2xl overflow-hidden border border-slate-300 dark:border-slate-700 shadow-2xl aspect-[4/3] flex items-center justify-center" data-location="Mumbai"><img alt="Professional long-exposure photograph of a modern city skyline at night featuring vibrant light trails from moving vehicles, symbolizing urban mobility and flow." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyysW_aXDrrPpF1SUELuADKnmtsMNII9NsSYjS-Gpqrz1TQroloLLQMkBN2CWLCYFu0ORf-BIY44OUi59x1FkXravgXVw36N58bUgCpvhCz4ojIjn8Or3ooufZKuijBb9FFiv-e4RnjsG40InC-IWgZR2-6EyRzsQA-ezlnOu_PbTextbncYWJLiEVRmDtUYB3qlXeXGUZWeoKjxspzQXj4wghaPLZageAG3v1JJCw4Rfy8kombzvGqrTYf6dFfNerW7p8DhKxJNUz"/></div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<div class="lg:col-span-2 flex flex-col gap-4 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<div class="flex items-center justify-between">
-<div>
-<h3 class="text-slate-900 dark:text-white text-lg font-bold">Traffic Density Trend</h3>
-<p class="text-slate-500 dark:text-slate-400 text-sm">Predictive real-time density analysis</p>
 </div>
+</section>
+<section class="px-6 lg:px-20 py-24" id="features">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16 space-y-4">
+<h2 class="text-accent-orange font-bold uppercase tracking-widest text-sm">Advanced Intelligence</h2>
+<h3 class="text-4xl lg:text-5xl font-black tracking-tight">Optimizing Urban Mobility</h3>
+<p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Specialized algorithms tailored for high-density traffic zones in Mumbai, Pune, and Nagpur.</p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="p-8 rounded-2xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 hover:border-primary transition-all group">
+<div class="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">insights</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Predictive Traffic Forecasting</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                AI analyzes traffic patterns to predict future congestion accurately up to 24 hours in advance.
+                            </p>
+</div>
+<div class="p-8 rounded-2xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 hover:border-primary transition-all group">
+<div class="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">schedule</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Smart Departure Planning</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Get the best departure time recommendations to avoid peak traffic windows and save time.
+                            </p>
+</div>
+<div class="p-8 rounded-2xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 hover:border-primary transition-all group">
+<div class="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">local_parking</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Parking Availability Prediction</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Find parking near your destination before you even arrive with real-time occupancy prediction.
+                            </p>
+</div>
+<div class="p-8 rounded-2xl bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 hover:border-primary transition-all group">
+<div class="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-3xl">person_pin_circle</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Personalized Mobility Insights</h4>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Learn from your travel patterns to optimize your daily commute and discover efficient alternates.
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<section class="px-6 lg:px-20 py-24 bg-slate-100 dark:bg-slate-900/30" id="how-it-works">
+<div class="max-w-7xl mx-auto">
+<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div class="order-2 lg:order-1 relative">
+<div class="aspect-square bg-primary/5 rounded-full absolute -top-10 -left-10 w-64 h-64 blur-3xl"></div>
+<div class="relative space-y-12">
+<div class="flex gap-6">
+<div class="flex-shrink-0 size-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-xl">1</div>
+<div class="space-y-2">
+<h5 class="text-2xl font-bold">Input Your Trip</h5>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Enter your start location, destination, and desired arrival time. Our interface is optimized for quick entry.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 size-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-xl">2</div>
+<div class="space-y-2">
+<h5 class="text-2xl font-bold">AI Analysis</h5>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">Our AI engine processes historical mobility data and live feeds to predict congestion levels for your route.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 size-12 rounded-full bg-primary text-white flex items-center justify-center font-black text-xl">3</div>
+<div class="space-y-2">
+<h5 class="text-2xl font-bold">Smart Optimization</h5>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">The system recommends the absolute best route, departure time, and parking options at your destination.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<div class="bg-white dark:bg-card-dark p-2 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
+<div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6" data-alt="Dashboard interface screenshot">
+<div class="flex items-center justify-between mb-8">
 <div class="flex gap-2">
-<span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">Live</span>
-<span class="px-3 py-1 bg-primary/10 rounded-full text-xs font-bold text-primary">Forecast</span>
+<div class="size-3 rounded-full bg-accent-red"></div>
+<div class="size-3 rounded-full bg-accent-orange"></div>
+<div class="size-3 rounded-full bg-green-500"></div>
 </div>
+<div class="px-3 py-1 rounded bg-slate-200 dark:bg-slate-800 text-[10px] font-bold">LIVE PUNE DATA</div>
 </div>
-<div class="flex flex-col gap-4 py-4 min-h-[240px]">
-<svg class="w-full h-full min-h-[180px]" fill="none" preserveaspectratio="none" viewbox="0 0 478 150" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z" fill="url(#paint0_linear)"></path>
-<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
-<defs>
-<lineargradient gradientunits="userSpaceOnUse" id="paint0_linear" x1="236" x2="236" y1="1" y2="149">
-<stop stop-color="#ec5b13" stop-opacity="0.3"></stop>
-<stop offset="1" stop-color="#ec5b13" stop-opacity="0"></stop>
-</lineargradient>
-</defs>
-</svg>
-<div class="flex justify-between px-2">
-<span class="text-slate-400 text-xs font-bold">06:00</span>
-<span class="text-slate-400 text-xs font-bold">07:00</span>
-<span class="text-slate-400 text-xs font-bold">08:00</span>
-<span class="text-slate-400 text-xs font-bold">09:00</span>
-<span class="text-slate-400 text-xs font-bold">10:00</span>
-<span class="text-slate-400 text-xs font-bold">11:00</span>
-<span class="text-slate-400 text-xs font-bold">12:00</span>
+<div class="space-y-6">
+<div class="h-32 bg-slate-200 dark:bg-slate-800 rounded-xl relative overflow-hidden" data-alt="Data visualization chart showing traffic trends">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
 </div>
+<div class="grid grid-cols-2 gap-4">
+<div class="h-20 bg-slate-200 dark:bg-slate-800 rounded-xl p-4 flex flex-col justify-between">
+<div class="h-2 w-12 bg-slate-300 dark:bg-slate-700 rounded"></div>
+<div class="h-4 w-20 bg-primary/40 rounded"></div>
 </div>
-</div>
-<div class="flex flex-col gap-4 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
-<h3 class="text-slate-900 dark:text-white text-lg font-bold">Quick Route View</h3>
-<div class="relative w-full aspect-square bg-slate-200 dark:bg-slate-700 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-600">
-<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract map layout of a city grid" data-location="New York" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-ulcn_u9UYDK3s1vN9HWc6FAAQykh3X2BQ9YrCGrTbebWQqicClObZWZAiT-1cdgK-vwk02lUNQRrvn6AB7wb_ghbBrQLLoeIjMx1sNgxfOv8zKgTF_yYdXWnTRS73JpJ9IecJFQ8kEZoGzHu0t-GK2tbRHqi8Z0QkE0wpTZvcK1mNvskgI-lifDkULgXlIxQ19R0tJWoA0wh3OMLGW9HVM9B_sbky-t8V6DqbyO-lJaarcOEzewMx4eY4kSzPvwTC7do1n8EXVfJ');"></div>
-<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-<div class="w-full h-full relative">
-<svg class="absolute inset-0 w-full h-full" viewbox="0 0 100 100">
-<path d="M20,80 Q50,70 80,20" fill="none" stroke="#ec5b13" stroke-dasharray="4 2" stroke-linecap="round" stroke-width="3"></path>
-<circle cx="20" cy="80" fill="#ec5b13" r="3"></circle>
-<circle cx="80" cy="20" fill="#ec5b13" r="3"></circle>
-</svg>
-</div>
-</div>
-<div class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-3 rounded-lg border border-white/20">
-<div class="flex items-center gap-3">
-<div class="p-2 bg-emerald-500 rounded-full">
-<span class="material-symbols-outlined text-white text-sm">directions_car</span>
-</div>
-<div>
-<p class="text-xs font-bold dark:text-white">Route A Optimized</p>
-<p class="text-[10px] text-slate-500 dark:text-slate-400">Via 5th Ave - 12 mins faster</p>
+<div class="h-20 bg-slate-200 dark:bg-slate-800 rounded-xl p-4 flex flex-col justify-between">
+<div class="h-2 w-12 bg-slate-300 dark:bg-slate-700 rounded"></div>
+<div class="h-4 w-20 bg-accent-orange/40 rounded"></div>
 </div>
 </div>
 </div>
 </div>
-<button class="w-full py-2 bg-primary text-white font-bold rounded-lg text-sm hover:opacity-90 transition-all">
-                            Start Navigation
-                        </button>
-</div>
-</div>
-<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800">
-<div class="flex items-center justify-between mb-4">
-<h3 class="text-slate-900 dark:text-white font-bold">Traffic Incidents</h3>
-<span class="text-primary text-xs font-bold cursor-pointer hover:underline">View All</span>
-</div>
-<div class="space-y-4">
-<div class="flex items-start gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-<div class="bg-red-100 dark:bg-red-900/30 p-2 rounded-lg text-red-500">
-<span class="material-symbols-outlined text-base">warning</span>
-</div>
-<div>
-<p class="text-sm font-bold">Construction on I-95 South</p>
-<p class="text-xs text-slate-500 dark:text-slate-400">Right lane closed near Exit 4. Expect delays.</p>
-</div>
-</div>
-<div class="flex items-start gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-<div class="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-lg text-orange-500">
-<span class="material-symbols-outlined text-base">slow_motion_video</span>
-</div>
-<div>
-<p class="text-sm font-bold">Heavy Traffic: Midtown Tunnel</p>
-<p class="text-xs text-slate-500 dark:text-slate-400">Congestion increasing. 15 min additional delay.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800">
-<div class="flex items-center justify-between mb-4">
-<h3 class="text-slate-900 dark:text-white font-bold">Smart Recommendations</h3>
-<span class="material-symbols-outlined text-primary">auto_awesome</span>
-</div>
-<div class="space-y-4">
-<div class="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
-<span class="material-symbols-outlined text-primary">directions_bus</span>
-<div class="flex-1">
-<p class="text-sm font-bold">Public Transport Alert</p>
-<p class="text-xs text-slate-600 dark:text-slate-400">Subway Line 7 is running 8 mins faster than driving today.</p>
-</div>
-<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
-</div>
-<div class="flex items-center gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-<span class="material-symbols-outlined text-blue-400">local_gas_station</span>
-<div class="flex-1">
-<p class="text-sm font-bold">Fuel Efficiency Tip</p>
-<p class="text-xs text-slate-600 dark:text-slate-400">Steady driving at 55mph on Route B saves $4.50 this week.</p>
-</div>
-<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+</section>
+<section class="px-6 lg:px-20 py-24">
+<div class="max-w-7xl mx-auto relative bg-primary rounded-[2.5rem] p-12 lg:p-20 overflow-hidden">
+<div class="absolute top-0 right-0 -mr-20 -mt-20 size-80 bg-white/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 text-center max-w-3xl mx-auto space-y-8">
+<h2 class="text-4xl lg:text-6xl font-black text-white tracking-tight">Ready to bypass the rush?</h2>
+<p class="text-white/80 text-lg">Join thousands of commuters in Maharashtra who are saving hours every week with AI-driven navigation.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<a class="bg-white text-primary px-10 py-5 rounded-2xl text-xl font-bold hover:bg-slate-50 transition-all shadow-xl" href="route_planner.html">
+                                Get Started for Free
+                            </a>
+<a class="bg-primary-dark/20 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-white/10 transition-all" href="route_planner.html">
+                                Plan Your Route
+                            </a>
 </div>
 </div>
 </div>
-</div>
+</section>
 </main>
-<footer class="mt-auto py-6 border-t border-slate-200 dark:border-slate-800 text-center">
-<p class="text-xs text-slate-500 dark:text-slate-500">© 2024 Urban Navigator AI. Powered by Predictive Analytics &amp; Machine Learning.</p>
+<footer class="px-6 lg:px-20 py-16 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-8 rounded bg-primary text-white">
+<span class="material-symbols-outlined text-xl">traffic</span>
+</div>
+<h2 class="text-lg font-bold">Urban Navigator AI</h2>
+</div>
+<p class="text-sm text-slate-500 max-w-xs">AI-driven urban mobility optimization. Making cities smarter, one route at a time.</p>
+</div>
+<div class="flex gap-12">
+<div class="flex flex-col gap-4">
+<h5 class="text-sm font-bold uppercase tracking-widest text-slate-400">Platform</h5>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-primary" href="dashboard.html">Dashboard</a></li>
+<li><a class="hover:text-primary" href="route_planner.html">Route Planner</a></li>
+<li><a class="hover:text-primary" href="analytics.html">Analytics</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<h5 class="text-sm font-bold uppercase tracking-widest text-slate-400">Company</h5>
+<ul class="space-y-2 text-sm">
+<li><a class="hover:text-primary" href="traffic_forecast.html">Traffic Forecast</a></li>
+<li><a class="hover:text-primary" href="parking_finder.html">Parking Finder</a></li>
+<li><a class="hover:text-primary" href="route_planner.html">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="flex flex-col gap-4 items-center md:items-end">
+<div class="flex gap-4">
+<a class="size-10 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="size-10 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg">share</span>
+</a>
+</div>
+<p class="text-xs text-slate-500">© 2024 Urban Navigator AI. All rights reserved.</p>
+</div>
+</div>
 </footer>
 </div>
-</div>
-
-<script>
-// Dashboard API CONFIG.API_BASE_URLffic Updates
-const API_BASE = 'http://localhost:8000/api';
-
-async function loadTrafficData() {
-    try {
-        const response = await fetch(`${API_BASE}/traffic/current`);
-        const data = await response.json();
-        
-        if (data.success) {
-            updateTrafficStatus(data);
-        }
-    } catch (error) {
-        console.log('Traffic API not available, using static data');
-    }
-}
-
-function updateTrafficStatus(data) {
-    const statusBadge = document.querySelector('.bg-emerald-500.text-white, .bg-yellow-500.text-white, .bg-red-500.text-white');
-    if (statusBadge && data.level) {
-        const levelColors = {
-            'low': 'bg-emerald-500',
-            'medium': 'bg-yellow-500', 
-            'high': 'bg-red-500'
-        };
-        statusBadge.className = `${levelColors[data.level]} text-white px-3 py-1 rounded-full text-xs font-bold`;
-        statusBadge.textContent = data.level.toUpperCase();
-    }
-}
-
-// Load data on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadTrafficData();
-    // Refresh every 30 seconds
-    setInterval(loadTrafficData, 30000);
-    
-    console.log('✓ Dashboard connected to ML traffic prediction API');
-});
-</script>
-
 </body></html>

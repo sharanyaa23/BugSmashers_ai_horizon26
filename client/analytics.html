@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Urban Navigator AI - Analytics Dashboard</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="config.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -70,123 +71,568 @@
 </div>
 </div>
 </header>
-<main class="flex flex-1 flex-col lg:flex-row h-[calc(100vh-72px)] overflow-hidden">
-<section class="flex-1 flex flex-col p-4 md:p-6 overflow-y-auto">
+<main class="flex-1 overflow-y-auto p-4 md:p-6">
 <div class="mb-6">
-<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Mobility Analytics</h1>
-<p class="text-slate-500 dark:text-slate-400">Real-time city-wide traffic intelligence and congestion patterns</p>
+<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Trip Analytics</h1>
+<p id="analyticsSubtitle" class="text-slate-500 dark:text-slate-400">Route-level mobility insights across traffic, parking, and savings.</p>
 </div>
-<div class="grid grid-cols-1 gap-6 h-full">
-<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50 flex flex-col">
-<div class="flex justify-between items-center mb-6">
-<h3 class="text-lg font-bold text-white">Historical Congestion Trends</h3>
-<div class="flex gap-2">
-<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-1 bg-primary rounded-full"></span> Mon</span>
-<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-1 bg-blue-400 rounded-full"></span> Wed</span>
-<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-1 bg-emerald-400 rounded-full"></span> Fri</span>
+
+<div id="analyticsEmptyState" class="hidden bg-[#1E293B] rounded-2xl border border-slate-700/50 p-8 text-center text-slate-300 max-w-3xl mx-auto">
+<span class="material-symbols-outlined text-primary text-5xl mb-4">analytics</span>
+<h2 class="text-2xl font-bold text-white mb-2">No Trip Selected Yet</h2>
+<p class="text-sm text-slate-400">Generate a route in Route Planner first. Analytics will then summarize trip duration, congestion, parking chances, AI insights, and savings for that destination.</p>
+</div>
+
+<div id="analyticsContent" class="hidden grid grid-cols-1 xl:grid-cols-12 gap-6">
+<section class="xl:col-span-3 space-y-6">
+<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50">
+<div class="flex items-center justify-between mb-4">
+<p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Current Trip Summary</p>
+<span id="analyticsHealthBadge" class="rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1 text-[11px] font-semibold">Ready</span>
+</div>
+<div class="space-y-4">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-slate-500">Start</p>
+<p id="analyticsStart" class="text-sm font-semibold text-white">--</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-slate-500">Destination</p>
+<p id="analyticsDestination" class="text-sm font-semibold text-white">--</p>
+</div>
+<div class="grid grid-cols-2 gap-3 pt-2">
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Distance</p>
+<p id="analyticsDistance" class="text-lg font-bold text-white mt-1">-- km</p>
+</div>
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Duration</p>
+<p id="analyticsDuration" class="text-lg font-bold text-white mt-1">-- mins</p>
+</div>
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Departure</p>
+<p id="analyticsDeparture" class="text-lg font-bold text-primary mt-1">--</p>
+</div>
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Weather</p>
+<p id="analyticsWeather" class="text-sm font-bold text-white mt-1">--</p>
+</div>
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Efficiency</p>
+<p id="analyticsEfficiencyValue" class="text-lg font-bold text-emerald-400 mt-1">--</p>
+</div>
+<div class="rounded-xl bg-slate-900/70 border border-slate-700/60 p-3">
+<p class="text-[10px] uppercase tracking-widest text-slate-500">CO2 Saved</p>
+<p id="analyticsCo2" class="text-lg font-bold text-white mt-1">-- kg</p>
 </div>
 </div>
-<div class="flex-1 w-full flex items-end gap-2 px-2">
-<svg class="w-full h-full preserve-aspect-ratio" viewbox="0 0 800 200">
-<path d="M0,150 Q100,140 200,160 T400,100 T600,120 T800,80" fill="none" stroke="#ec5b13" stroke-width="3"></path>
-<path d="M0,130 Q100,120 200,140 T400,80 T600,100 T800,60" fill="none" stroke="#60a5fa" stroke-width="3"></path>
-<path d="M0,170 Q100,160 200,180 T400,120 T600,140 T800,100" fill="none" stroke="#34d399" stroke-width="3"></path>
-<line stroke="#334155" stroke-width="1" x1="0" x2="800" y1="190" y2="190"></line>
-<text fill="#94a3b8" font-size="10" x="0" y="198">06:00</text>
-<text fill="#94a3b8" font-size="10" x="200" y="198">09:00</text>
-<text fill="#94a3b8" font-size="10" x="400" y="198">12:00</text>
-<text fill="#94a3b8" font-size="10" x="600" y="198">15:00</text>
-<text fill="#94a3b8" font-size="10" x="760" y="198">18:00</text>
-</svg>
-</div>
-</div>
-<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50 flex flex-col">
-<h3 class="text-lg font-bold text-white mb-6">Average Travel Time Savings</h3>
-<div class="flex-1 w-full flex items-end justify-around gap-4 px-2">
-<div class="flex flex-col items-center gap-2 w-full max-w-[60px]">
-<div class="w-full bg-slate-700 rounded-t-lg" style="height: 40%"></div>
-<span class="text-[10px] text-slate-400">-30m</span>
-</div>
-<div class="flex flex-col items-center gap-2 w-full max-w-[60px]">
-<div class="w-full bg-primary/80 rounded-t-lg" style="height: 75%"></div>
-<span class="text-[10px] text-slate-400 font-bold">-20m</span>
-</div>
-<div class="flex flex-col items-center gap-2 w-full max-w-[60px]">
-<div class="w-full bg-slate-700 rounded-t-lg" style="height: 55%"></div>
-<span class="text-[10px] text-slate-400">-10m</span>
-</div>
-<div class="flex flex-col items-center gap-2 w-full max-w-[60px]">
-<div class="w-full bg-slate-700 rounded-t-lg" style="height: 30%"></div>
-<span class="text-[10px] text-slate-400">+10m</span>
-</div>
-<div class="flex flex-col items-center gap-2 w-full max-w-[60px]">
-<div class="w-full bg-slate-700 rounded-t-lg" style="height: 20%"></div>
-<span class="text-[10px] text-slate-400">+20m</span>
-</div>
-</div>
-<p class="text-center text-xs text-slate-400 mt-4">Departure Offset (Minutes)</p>
 </div>
 </div>
 </section>
-<aside class="w-full lg:w-96 bg-slate-50 dark:bg-background-dark/50 border-l border-slate-200 dark:border-primary/20 p-6 flex flex-col gap-6 overflow-y-auto border-slate-800" style="background-color: #020617;">
+
+<section class="xl:col-span-9 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<div class="bg-[#1E293B] rounded-2xl p-5 border border-slate-700/50">
+<div class="flex items-center justify-between mb-3">
+<p class="text-slate-400 text-sm font-medium">Traffic Level</p>
+<span class="material-symbols-outlined text-red-400">traffic</span>
+</div>
+<p id="analyticsTrafficLevel" class="text-3xl font-bold text-red-400">--</p>
+<p id="analyticsTrafficDelta" class="text-xs font-semibold uppercase mt-3 text-slate-400">--</p>
+</div>
+<div class="bg-[#1E293B] rounded-2xl p-5 border border-slate-700/50">
+<div class="flex items-center justify-between mb-3">
+<p class="text-slate-400 text-sm font-medium">Est. Travel Time</p>
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<p id="analyticsTravelTime" class="text-3xl font-bold text-white">--</p>
+<p id="analyticsTravelTimeNote" class="text-xs font-semibold uppercase mt-3 text-emerald-400">--</p>
+</div>
+<div class="bg-[#1E293B] rounded-2xl p-5 border border-slate-700/50">
+<div class="flex items-center justify-between mb-3">
+<p class="text-slate-400 text-sm font-medium">Best Departure</p>
+<span class="material-symbols-outlined text-blue-400">rocket_launch</span>
+</div>
+<p id="analyticsOptimalDeparture" class="text-3xl font-bold text-white">--</p>
+<p id="analyticsDepartureNote" class="text-xs font-medium mt-3 text-slate-400">--</p>
+</div>
+<div class="bg-[#1E293B] rounded-2xl p-5 border border-slate-700/50">
+<div class="flex items-center justify-between mb-3">
+<p class="text-slate-400 text-sm font-medium">Parking Availability</p>
+<span class="material-symbols-outlined text-emerald-400">local_parking</span>
+</div>
+<p id="analyticsParkingProbability" class="text-3xl font-bold text-white">--%</p>
+<div class="flex items-center gap-1 mt-3 w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div id="analyticsParkingProbabilityBar" class="bg-emerald-500 h-full" style="width:0%"></div>
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<div class="xl:col-span-2 bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50">
+<div class="flex items-center justify-between mb-6">
 <div>
-<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2 text-white">
-<span class="material-symbols-outlined text-primary">psychology</span>
-                        Personalized Insights
-                    </h3>
-<p class="text-sm text-slate-500 dark:text-slate-400 text-slate-400">Based on your recent movement patterns</p>
+<h3 class="text-lg font-bold text-white">Traffic Forecast Trend</h3>
+<p id="trafficTrendSummary" class="text-xs text-slate-400 mt-1">Live route-based congestion forecast</p>
 </div>
-<div class="flex flex-col gap-4">
-<div class="bg-white dark:bg-primary/5 p-4 rounded-xl border border-slate-200 dark:border-primary/20 shadow-sm hover:border-primary transition-colors cursor-pointer border-slate-700/50" style="background-color: #1E293B;">
-<div class="flex items-start gap-3">
-<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0" style="background-color: #1E293B;">
-<span class="material-symbols-outlined">schedule</span>
+<div class="flex gap-3">
+<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Low</span>
+<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-3 rounded-full bg-orange-400"></span> Medium</span>
+<span class="flex items-center gap-1 text-xs text-slate-400"><span class="w-3 h-3 rounded-full bg-red-500"></span> High</span>
 </div>
+</div>
+<div class="h-[320px]">
+<svg id="analyticsTrafficChart" class="w-full h-full" viewBox="0 0 900 320"></svg>
+</div>
+<div id="analyticsTrafficLabels" class="flex justify-between text-[11px] text-slate-500 px-2">
+<span>--</span>
+</div>
+</div>
+
+<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50">
+<div class="flex items-center justify-between mb-6">
 <div>
-<p class="text-sm font-semibold text-slate-900 dark:text-white text-white">Commute Detection</p>
-<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 text-slate-400">Based on your recent movement patterns</p>
+<h3 class="text-lg font-bold text-white">Parking Opportunity</h3>
+<p id="parkingChartSummary" class="text-xs text-slate-400 mt-1">Top destination parking suggestions</p>
+</div>
+<div class="rounded-full bg-primary/10 text-primary px-3 py-1 text-[11px] font-semibold">Top 3</div>
+</div>
+<div id="analyticsParkingBars" class="space-y-4"></div>
 </div>
 </div>
+
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-white">Traffic Incidents</h3>
+<span class="text-primary text-xs font-bold">Live</span>
 </div>
-<div class="bg-primary/10 dark:bg-primary/20 p-4 rounded-xl border border-primary/30 shadow-sm hover:bg-primary/20 transition-all cursor-pointer border-slate-700/50" style="background-color: #1E293B;">
-<div class="flex items-start gap-3">
-<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white shrink-0">
-<span class="material-symbols-outlined">bolt</span>
+<div id="analyticsTrafficIncidents" class="space-y-4"></div>
 </div>
-<div>
-<p class="text-sm font-bold text-primary text-white">Time Optimization</p>
-<p class="text-xs text-slate-700 dark:text-slate-200 mt-1 text-slate-400">Leaving <span class="font-bold underline">20 minutes earlier</span> could save you <span class="font-bold">15 minutes</span> of total travel time today.</p>
+<div class="bg-[#1E293B] rounded-2xl p-6 border border-slate-700/50">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-white">Smart Recommendations</h3>
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
 </div>
-</div>
-</div>
-<div class="bg-white dark:bg-primary/5 p-4 rounded-xl border border-slate-200 dark:border-primary/20 shadow-sm hover:border-primary transition-colors cursor-pointer border-slate-700/50" style="background-color: #1E293B;">
-<div class="flex items-start gap-3">
-<div class="size-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-600 shrink-0">
-<span class="material-symbols-outlined">eco</span>
-</div>
-<div>
-<p class="text-sm font-semibold text-slate-900 dark:text-white text-white">Eco Suggestion</p>
-<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 text-slate-400">Based on your recent movement patterns</p>
+<div id="analyticsRecommendations" class="space-y-4"></div>
 </div>
 </div>
+</section>
 </div>
-</div>
-<div class="mt-auto pt-6">
-<div class="bg-slate-900 dark:bg-slate-800 p-6 rounded-2xl text-white relative overflow-hidden border border-slate-700/50" style="background-color: #1E293B;">
-<div class="relative z-10">
-<h4 class="text-sm font-bold opacity-80 mb-2">Weekly Summary</h4>
-<div class="text-3xl font-black mb-4">4.2 hrs <span class="text-sm font-normal opacity-60">saved</span></div>
-<div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[75%]"></div>
-</div>
-<p class="text-[10px] mt-2 opacity-60">You're in the top 10% of efficient commuters in San Francisco.</p>
-</div>
-<div class="absolute -right-4 -bottom-4 opacity-20">
-<span class="material-symbols-outlined text-8xl">analytics</span>
-</div>
-</div>
-</div>
-</aside>
 </main>
 </div>
+<script>
+const APP_CONFIG = window.APP_CONFIG || {};
+const API_BASE = APP_CONFIG.API_BASE_URL || 'http://localhost:8000/api';
+const ROUTE_SESSION_KEY = 'urbanNavigator.route';
+
+function readRouteSession() {
+    try {
+        const rawRoute = sessionStorage.getItem(ROUTE_SESSION_KEY);
+        return rawRoute ? JSON.parse(rawRoute) : null;
+    } catch (error) {
+        console.warn('Could not read route session for analytics.', error);
+        return null;
+    }
+}
+
+function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+function getLevelStyles(level) {
+    return {
+        low: { text: 'text-emerald-400', fill: '#22c55e' },
+        medium: { text: 'text-orange-400', fill: '#f97316' },
+        high: { text: 'text-red-400', fill: '#ef4444' }
+    }[level] || { text: 'text-slate-400', fill: '#64748b' };
+}
+
+function formatTime(value) {
+    if (!value || !value.includes(':')) {
+        return value || '--';
+    }
+    const [hourText, minuteText] = value.split(':');
+    const hour = Number(hourText);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minuteText} ${suffix}`;
+}
+
+function showEmptyState() {
+    document.getElementById('analyticsEmptyState')?.classList.remove('hidden');
+    document.getElementById('analyticsContent')?.classList.add('hidden');
+}
+
+function showAnalyticsContent() {
+    document.getElementById('analyticsEmptyState')?.classList.add('hidden');
+    document.getElementById('analyticsContent')?.classList.remove('hidden');
+}
+
+function renderTripSummary(routeData, trafficData, parkingData) {
+    setText('analyticsSubtitle', `Analytics for ${routeData.startLabel || routeData.start} to ${routeData.destinationLabel || routeData.destination}`);
+    setText('analyticsStart', routeData.startLabel || routeData.start || '--');
+    setText('analyticsDestination', routeData.destinationLabel || routeData.destination || '--');
+    setText('analyticsDistance', routeData.distanceKm ? `${routeData.distanceKm} km` : '-- km');
+    setText('analyticsDuration', routeData.durationMinutes ? `${routeData.durationMinutes} mins` : '-- mins');
+    setText('analyticsDeparture', formatTime(routeData.arrivalTime || trafficData?.recommended_departure || '--'));
+    setText('analyticsWeather', routeData.weather?.headline || 'Weather unavailable');
+    const efficiency = Number(routeData.efficiencyScore || 0);
+    const parkingProbability = Number(parkingData?.overall_probability || 0);
+    const congestionRisk = Number(trafficData?.current_status?.congestion || 0);
+    setText('analyticsEfficiencyValue', `${efficiency || '--'}`);
+    setText('analyticsCo2', routeData.co2SavingsKg ? `${Number(routeData.co2SavingsKg).toFixed(2)} kg` : '-- kg');
+
+    const healthBadge = document.getElementById('analyticsHealthBadge');
+    if (healthBadge) {
+        if (congestionRisk >= 70) {
+            healthBadge.className = 'rounded-full bg-red-500/10 text-red-400 px-3 py-1 text-[11px] font-semibold';
+            healthBadge.textContent = 'High Congestion';
+        } else if (parkingProbability < 45) {
+            healthBadge.className = 'rounded-full bg-orange-500/10 text-orange-400 px-3 py-1 text-[11px] font-semibold';
+            healthBadge.textContent = 'Parking Tight';
+        } else {
+            healthBadge.className = 'rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1 text-[11px] font-semibold';
+            healthBadge.textContent = 'Trip Ready';
+        }
+    }
+}
+
+function renderSummaryCards(routeData, trafficData, parkingData) {
+    const trafficLevel = trafficData?.current_status?.level || '--';
+    const congestionValue = Number(trafficData?.current_status?.congestion || 0);
+    const deltaPercent = Number(trafficData?.current_status?.delta_percent || 0);
+    const deltaPrefix = deltaPercent > 0 ? '+' : '';
+    const estimatedTravelTime = trafficData?.estimated_travel_time || routeData.durationMinutes || '--';
+    const plannedDuration = Number(routeData.durationMinutes || 0);
+    const travelDelta = plannedDuration && Number(estimatedTravelTime)
+        ? Number(estimatedTravelTime) - plannedDuration
+        : 0;
+    const parkingProbability = Math.round(Number(parkingData?.overall_probability || 0));
+    const parkingProbabilityBar = document.getElementById('analyticsParkingProbabilityBar');
+
+    setText('analyticsTrafficLevel', typeof trafficLevel === 'string' ? trafficLevel.charAt(0).toUpperCase() + trafficLevel.slice(1) : '--');
+    setText('analyticsTrafficDelta', `${deltaPrefix}${deltaPercent}% from avg`);
+    setText('analyticsTravelTime', `${estimatedTravelTime} min`);
+    setText(
+        'analyticsTravelTimeNote',
+        travelDelta <= 0 ? `${Math.abs(travelDelta)} min optimized` : `${travelDelta} min slower than route plan`
+    );
+    setText('analyticsOptimalDeparture', formatTime(trafficData?.recommended_departure || routeData.arrivalTime || '--'));
+    setText('analyticsDepartureNote', trafficData?.peak_intensity?.alert || 'Predicted low congestion window');
+    setText('analyticsParkingProbability', `${parkingProbability || '--'}%`);
+
+    if (parkingProbabilityBar) {
+        parkingProbabilityBar.style.width = `${Math.max(0, Math.min(100, parkingProbability))}%`;
+    }
+
+    const trafficLevelEl = document.getElementById('analyticsTrafficLevel');
+    const trafficDeltaEl = document.getElementById('analyticsTrafficDelta');
+    if (trafficLevelEl && trafficDeltaEl) {
+        const styles = getLevelStyles(trafficData?.current_status?.level);
+        trafficLevelEl.style.color = styles.fill;
+        trafficDeltaEl.className = `text-xs font-semibold uppercase mt-3 ${styles.text}`;
+    }
+
+    const travelTimeNoteEl = document.getElementById('analyticsTravelTimeNote');
+    if (travelTimeNoteEl) {
+        travelTimeNoteEl.className = `text-xs font-semibold uppercase mt-3 ${travelDelta <= 0 ? 'text-emerald-400' : 'text-orange-400'}`;
+    }
+}
+
+function renderTrafficChart(predictions, trafficData) {
+    const svg = document.getElementById('analyticsTrafficChart');
+    const labels = document.getElementById('analyticsTrafficLabels');
+    if (!svg || !labels) {
+        return;
+    }
+
+    if (!predictions || predictions.length === 0) {
+        svg.innerHTML = '<text x="450" y="160" text-anchor="middle" fill="#94a3b8" font-size="18" font-weight="600">No traffic trend available</text>';
+        labels.innerHTML = '<span>--</span>';
+        return;
+    }
+
+    const width = 900;
+    const left = 56;
+    const right = 872;
+    const top = 34;
+    const bottom = 270;
+    const values = predictions.map(item => item.congestion_index);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const padding = Math.max(8, Math.round((maxValue - minValue) * 0.35));
+    const chartMin = Math.max(0, minValue - padding);
+    const chartMax = Math.min(100, maxValue + padding);
+    const chartRange = Math.max(1, chartMax - chartMin);
+    const xStep = predictions.length > 1 ? (right - left) / (predictions.length - 1) : 0;
+    const points = predictions.map((prediction, index) => {
+        const x = left + (xStep * index);
+        const normalizedValue = (prediction.congestion_index - chartMin) / chartRange;
+        const y = bottom - (normalizedValue * (bottom - top));
+        return { x, y, ...prediction };
+    });
+
+    const pathData = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
+    const areaPath = `${pathData} L ${points[points.length - 1].x} ${bottom} L ${points[0].x} ${bottom} Z`;
+    const peakPoint = points.reduce((peak, point) => point.congestion_index > peak.congestion_index ? point : peak, points[0]);
+    const gridValues = Array.from({ length: 4 }, (_, index) => (chartMin + ((chartRange / 3) * index))).reverse();
+    const gridMarkup = gridValues.map((value, index) => {
+        const y = top + (((bottom - top) / (gridValues.length - 1)) * index);
+        return `
+            <g>
+                <line x1="${left}" y1="${y}" x2="${right}" y2="${y}" stroke="rgba(148,163,184,0.16)" stroke-width="1"></line>
+                <text x="${left - 12}" y="${y + 4}" text-anchor="end" fill="#64748b" font-size="11" font-weight="600">${Math.round(value)}%</text>
+            </g>
+        `;
+    }).join('');
+    const dotMarkup = points.map(point => `
+        <circle cx="${point.x}" cy="${point.y}" r="4.5" fill="${getLevelStyles(point.level).fill}" stroke="#0f172a" stroke-width="2"></circle>
+    `).join('');
+
+    const peakLabelX = Math.min(Math.max(peakPoint.x - 76, 24), width - 176);
+    const peakLabelY = Math.max(8, peakPoint.y - 54);
+
+    svg.innerHTML = `
+        <defs>
+            <linearGradient id="analyticsTrafficLine" x1="0%" x2="0%" y1="100%" y2="0%">
+                <stop offset="0%" stop-color="#22c55e"></stop>
+                <stop offset="50%" stop-color="#f97316"></stop>
+                <stop offset="100%" stop-color="#ef4444"></stop>
+            </linearGradient>
+            <linearGradient id="analyticsTrafficFill" x1="0%" x2="0%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="#ec5b13" stop-opacity="0.24"></stop>
+                <stop offset="100%" stop-color="#ec5b13" stop-opacity="0"></stop>
+            </linearGradient>
+        </defs>
+        ${gridMarkup}
+        <path d="${areaPath}" fill="url(#analyticsTrafficFill)"></path>
+        <path d="${pathData}" fill="none" stroke="url(#analyticsTrafficLine)" stroke-linecap="round" stroke-width="5"></path>
+        ${dotMarkup}
+        <line x1="${peakPoint.x}" y1="${peakPoint.y - 8}" x2="${peakPoint.x}" y2="${peakLabelY + 30}" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4"></line>
+        <circle cx="${peakPoint.x}" cy="${peakPoint.y}" r="7" fill="#ef4444" stroke="#ffffff" stroke-width="2"></circle>
+        <rect x="${peakLabelX}" y="${peakLabelY}" width="176" height="30" rx="15" fill="rgba(239,68,68,0.14)" stroke="rgba(239,68,68,0.4)"></rect>
+        <text x="${peakLabelX + 88}" y="${peakLabelY + 20}" text-anchor="middle" fill="#f87171" font-size="14" font-weight="700">
+            Peak ${peakPoint.time} · ${peakPoint.congestion_index}%
+        </text>
+    `;
+
+    const labelIndexes = Array.from(new Set([
+        0,
+        Math.floor((predictions.length - 1) * 0.25),
+        Math.floor((predictions.length - 1) * 0.5),
+        Math.floor((predictions.length - 1) * 0.75),
+        predictions.length - 1
+    ]));
+
+    labels.innerHTML = labelIndexes.map(index => {
+        const point = points[index];
+        return `<span class="${point.time === peakPoint.time ? 'text-white font-bold' : ''}">${point.time}</span>`;
+    }).join('');
+
+    setText(
+        'trafficTrendSummary',
+        `Current congestion ${trafficData?.current_status?.congestion ?? '--'}% with peak expected at ${peakPoint.time}.`
+    );
+}
+
+function renderParkingChart(parkingData) {
+    const container = document.getElementById('analyticsParkingBars');
+    if (!container) {
+        return;
+    }
+
+    const zones = parkingData?.parking_zones || [];
+    if (!zones.length) {
+        container.innerHTML = '<p class="text-sm text-slate-400">No parking suggestions available.</p>';
+        return;
+    }
+
+    container.innerHTML = zones.slice(0, 3).map(zone => {
+        const levelColor = zone.availability > 70 ? '#22c55e' : zone.availability >= 40 ? '#f97316' : '#ef4444';
+        return `
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="font-semibold text-white">${zone.name}</span>
+                    <span class="font-bold" style="color:${levelColor}">${zone.availability}%</span>
+                </div>
+                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full" style="width:${zone.availability}%; background:${levelColor};"></div>
+                </div>
+                <div class="flex items-center justify-between text-[11px] text-slate-400">
+                    <span>${zone.distance} km away</span>
+                    <span>${zone.available_spots} spots • ₹${zone.price_per_hour}/hr</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const bestZone = zones[0];
+    setText('parkingChartSummary', `Best zone near ${parkingData.destination_label || 'destination'} is ${bestZone.name} with ${bestZone.availability}% predicted availability.`);
+}
+
+function renderIncidentsAndRecommendations(routeData, trafficData, parkingData) {
+    const congestion = Number(trafficData?.current_status?.congestion || 0);
+    const parkingProbability = Number(parkingData?.overall_probability || 0);
+    const destinationName = parkingData?.destination_label || routeData.destinationLabel || routeData.destination || 'destination';
+    const incidentsContainer = document.getElementById('analyticsTrafficIncidents');
+    const recommendationsContainer = document.getElementById('analyticsRecommendations');
+    const bestZone = parkingData?.parking_zones?.[0];
+    const departureTime = formatTime(trafficData?.recommended_departure || routeData.arrivalTime || '--');
+
+    if (incidentsContainer) {
+        const incidents = [
+            {
+                iconBg: 'bg-red-500/10',
+                iconColor: 'text-red-400',
+                icon: 'warning',
+                title: `${trafficData?.peak_intensity?.alert || 'Peak congestion alert'}`,
+                text: `Peak pressure is forecast near ${trafficData?.peak_intensity?.time || '--'} at about ${trafficData?.peak_intensity?.congestion_index || '--'}% congestion on this route.`
+            },
+            {
+                iconBg: 'bg-orange-500/10',
+                iconColor: 'text-orange-400',
+                icon: 'route',
+                title: `Rerouting around ${destinationName}`,
+                text: trafficData?.rerouting_summary || 'Live rerouting guidance is unavailable right now.'
+            }
+        ];
+
+        incidentsContainer.innerHTML = incidents.map(item => `
+            <div class="flex items-start gap-4 p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+                <div class="${item.iconBg} p-2 rounded-lg ${item.iconColor}">
+                    <span class="material-symbols-outlined text-base">${item.icon}</span>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white">${item.title}</p>
+                    <p class="text-xs text-slate-400 mt-1">${item.text}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    if (recommendationsContainer) {
+        const recommendations = [
+            {
+                iconBg: 'bg-primary/10',
+                iconColor: 'text-primary',
+                icon: 'schedule',
+                title: 'Departure Recommendation',
+                text: `Leaving around ${departureTime} should reduce congestion and improve arrival reliability.`
+            },
+            {
+                iconBg: 'bg-emerald-500/10',
+                iconColor: 'text-emerald-400',
+                icon: 'local_parking',
+                title: 'Parking Strategy',
+                text: bestZone
+                    ? `${bestZone.name} is the strongest option right now with ${bestZone.availability}% predicted availability.`
+                    : 'Parking recommendation unavailable.'
+            },
+            {
+                iconBg: 'bg-blue-500/10',
+                iconColor: 'text-blue-400',
+                icon: 'auto_awesome',
+                title: 'AI Route Insight',
+                text: trafficData?.ai_insight || 'AI insight unavailable.'
+            },
+            {
+                iconBg: 'bg-emerald-500/10',
+                iconColor: 'text-emerald-400',
+                icon: 'eco',
+                title: 'Efficiency Tip',
+                text: routeData.co2SavingsKg
+                    ? `This trip is projected to save ${Number(routeData.co2SavingsKg).toFixed(2)} kg of CO2 with an efficiency score of ${routeData.efficiencyScore || '--'}.`
+                    : `Parking confidence is ${Math.round(parkingProbability)}% for ${destinationName}.`
+            }
+        ];
+
+        recommendationsContainer.innerHTML = recommendations.map(item => `
+            <div class="flex items-center gap-4 p-3 rounded-lg border border-slate-800 bg-slate-900/60">
+                <span class="material-symbols-outlined ${item.iconColor}">${item.icon}</span>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-white">${item.title}</p>
+                    <p class="text-xs text-slate-400 mt-1">${item.text}</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-500 text-sm">chevron_right</span>
+            </div>
+        `).join('');
+    }
+}
+
+async function loadAnalyticsData(routeData) {
+    const startLocation = routeData.startLabel || routeData.start;
+    const endLocation = routeData.destinationLabel || routeData.destination;
+    const departureTime = routeData.arrivalTime || '09:00';
+
+    const [trafficResponse, parkingResponse] = await Promise.all([
+        fetch(`${API_BASE}/traffic/predict`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                start_location: startLocation,
+                end_location: endLocation,
+                departure_time: departureTime
+            })
+        }),
+        fetch(`${API_BASE}/parking/predict`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                destination: endLocation,
+                arrival_time: departureTime
+            })
+        })
+    ]);
+
+    const trafficData = await trafficResponse.json();
+    const parkingData = await parkingResponse.json();
+
+    if (!trafficResponse.ok || !trafficData.success) {
+        throw new Error(trafficData.error || 'Could not load traffic analytics.');
+    }
+    if (!parkingResponse.ok || !parkingData.success) {
+        throw new Error(parkingData.error || 'Could not load parking analytics.');
+    }
+
+    return { trafficData, parkingData };
+}
+
+async function initAnalyticsPage() {
+    const routeData = readRouteSession();
+    if (!routeData || !routeData.start || !routeData.destination) {
+        showEmptyState();
+        return;
+    }
+
+    showAnalyticsContent();
+    renderTripSummary(routeData, null, null);
+
+    try {
+        const { trafficData, parkingData } = await loadAnalyticsData(routeData);
+        renderTripSummary(routeData, trafficData, parkingData);
+        renderSummaryCards(routeData, trafficData, parkingData);
+        renderTrafficChart(trafficData.predictions_3hr || trafficData.predictions || [], trafficData);
+        renderParkingChart(parkingData);
+        renderIncidentsAndRecommendations(routeData, trafficData, parkingData);
+    } catch (error) {
+        console.error('Analytics page failed to load:', error);
+        setText('analyticsSubtitle', error.message || 'Analytics are temporarily unavailable.');
+        const incidentsContainer = document.getElementById('analyticsTrafficIncidents');
+        const recommendationsContainer = document.getElementById('analyticsRecommendations');
+        if (incidentsContainer) {
+            incidentsContainer.innerHTML = '<p class="text-sm text-slate-400">Traffic incidents are unavailable right now.</p>';
+        }
+        if (recommendationsContainer) {
+            recommendationsContainer.innerHTML = '<p class="text-sm text-slate-400">Recommendations will reappear once analytics reload successfully.</p>';
+        }
+        renderTrafficChart([], null);
+        renderParkingChart({ parking_zones: [] });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initAnalyticsPage);
+</script>
 </body></html>
