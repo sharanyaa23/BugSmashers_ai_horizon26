@@ -1,20 +1,38 @@
 import pandas as pd
 import numpy as np
-import torch
-from chronos import ChronosPipeline
 from datetime import datetime, timedelta
 from pathlib import Path
 import joblib
 from sklearn.preprocessing import StandardScaler
+
+# Try to import heavy ML dependencies, but allow graceful fallback if missing
+try:
+    import torch
+    from chronos import ChronosPipeline
+    _HAS_CHRONOS = True
+except Exception as e:  # pragma: no cover - dev environment without Chronos/torch
+    torch = None
+    ChronosPipeline = None
+    _HAS_CHRONOS = False
+    print(f"Warning: Chronos / torch not available, using rule-based traffic predictions. Details: {e}")
 
 class TrafficForecaster:
     def __init__(self, model_name="amazon/chronos-t5-small"):
         self.model_name = model_name
         self.pipeline = None
         self.scaler = StandardScaler()
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        # If torch is not available, we will never load the Chronos model
+        if torch is not None and hasattr(torch, "cuda"):
+            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        else:
+            self.device = "cpu"
         
     def load_model(self):
+        if not _HAS_CHRONOS:
+            # In lightweight environments we skip loading the heavy model.
+            # The rest of the app will fall back to rule-based traffic predictions.
+            raise RuntimeError("Chronos / torch not installed; cannot load ML model.")
+
         print(f"Loading Chronos model: {self.model_name} on {self.device}...")
         self.pipeline = ChronosPipeline.from_pretrained(
             self.model_name,
@@ -30,6 +48,9 @@ class TrafficForecaster:
         return torch.tensor(series, dtype=torch.float32)
     
     def predict_future(self, historical_data, prediction_length=12):
+        if not _HAS_CHRONOS or self.pipeline is None:
+            raise RuntimeError("Chronos model is not loaded.")
+
         context = torch.tensor(historical_data[-100:], dtype=torch.float32)
         
         forecast = self.pipeline.predict(
