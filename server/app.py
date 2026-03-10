@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 import os
 from routes.traffic import router as traffic_router
@@ -14,6 +16,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
 origins = os.getenv('CORS_ORIGINS', '*').split(',')
 app.add_middleware(
     CORSMiddleware,
@@ -27,19 +30,12 @@ app.include_router(traffic_router, prefix="/api/traffic", tags=["Traffic"])
 app.include_router(routing_router, prefix="/api/route", tags=["Routing"])
 app.include_router(parking_router, prefix="/api/parking", tags=["Parking"])
 
+app.mount("/", StaticFiles(directory=r"c:\Users\samma\Desktop\vasai\BugSmashers_ai_horizon26\client", html=True), name="static")
+
 @app.get("/")
 async def home():
-    return {
-        "message": "Urban Navigator AI - Backend API",
-        "status": "running",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "endpoints": {
-            "traffic": "/api/traffic/predict",
-            "routing": "/api/route/optimize",
-            "parking": "/api/parking/predict"
-        }
-    }
+    print("Home called")
+    return FileResponse(r"c:\Users\samma\Desktop\vasai\BugSmashers_ai_horizon26\client\dashboard.html", media_type="text/html")
 
 @app.get("/api/health")
 async def health_check():
