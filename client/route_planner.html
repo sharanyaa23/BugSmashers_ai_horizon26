@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#020617",
+                        "card-dark": "#1e293b",
+                        "nav-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .active-nav { border-bottom: 2px solid #ec5b13; }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #334155;
+            height: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: -4px;
+            background-color: #ec5b13;
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-nav-dark px-10 py-3 sticky top-0 z-50 shadow-sm">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-primary text-sm font-semibold leading-normal border-b-2 border-primary py-1" href="route_planner.html">Route Planner</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="traffic_forecast.html">Traffic Forecast</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="parking_finder.html">Parking Finder</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="analytics.html">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary text-white hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto p-6 lg:p-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Panel: Inputs -->
+<div class="lg:col-span-4 space-y-6">
+<div class="bg-white dark:bg-card-dark p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+<h2 class="text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">route</span>
+                        Plan Your Trip
+                    </h2>
+<div class="space-y-5">
+<!-- Locations -->
+<div class="space-y-4">
+<div class="relative">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Starting Location</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-3.5 text-slate-400 text-lg">my_location</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter origin address..." type="text"/>
+</div>
+</div>
+<div class="relative">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Destination</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-3.5 text-slate-400 text-lg">location_on</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter destination..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Time & Mode -->
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Arrival Time</label>
+<input class="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all" type="time" value="09:00"/>
+</div>
+<div>
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Travel Mode</label>
+<select class="w-full px-3 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all appearance-none">
+<option>🚗 Car</option>
+<option>🚲 Bike</option>
+<option>🚆 Transit</option>
+</select>
+</div>
+</div>
+<!-- Departure Flexibility Slider -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Departure Flexibility</label>
+<span class="text-xs font-medium text-primary">±30 mins</span>
+</div>
+<input class="w-full" max="60" min="0" type="range" value="30"/>
+<div class="flex justify-between text-[10px] text-slate-400 mt-1 uppercase">
+<span>Strict</span>
+<span>Flexible</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group">
+<span>Generate Smart Route</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">bolt</span>
+</button>
+</div>
+</div>
+<!-- Weather/Context Card -->
+<div class="bg-primary/10 border border-primary/20 p-4 rounded-xl flex items-center gap-4">
+<div class="bg-primary/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">cloud</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Light rain expected at 09:15</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">AI suggests car for current destination.</p>
+</div>
+</div>
+</div>
+<!-- Right Panel: Map Visualization -->
+<div class="lg:col-span-8 flex flex-col gap-4">
+<div class="bg-slate-200 dark:bg-card-dark rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 h-[600px] relative shadow-inner">
+<!-- Map Background -->
+<div class="absolute inset-0 bg-slate-900" data-location="New York City" style="">
+<!-- Mock Map Design using Gradients/SVG -->
+<svg class="opacity-40" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="80" id="grid" patternunits="userSpaceOnUse" width="80">
+<path d="M 80 0 L 0 0 0 80" fill="none" stroke="#334155" stroke-width="1"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+<!-- Main Route Line -->
+<path d="M 200 400 Q 400 350, 500 200 T 800 100" fill="none" stroke="#ec5b13" stroke-dasharray="1 8" stroke-linecap="round" stroke-width="4"></path>
+<path d="M 200 400 Q 400 350, 500 200 T 800 100" fill="none" stroke="#ec5b13" stroke-opacity="0.3" stroke-width="4"></path>
+<!-- Congestion Zones -->
+<circle cx="450" cy="300" fill="#ef4444" fill-opacity="0.25" r="40"></circle>
+<circle cx="450" cy="300" fill="#ef4444" fill-opacity="0.4" r="25"></circle>
+<circle cx="650" cy="180" fill="#ef4444" fill-opacity="0.15" r="60"></circle>
+<circle cx="650" cy="180" fill="#ef4444" fill-opacity="0.3" r="35"></circle>
+</svg>
+<!-- Start Marker -->
+<div class="absolute top-[390px] left-[190px] flex flex-col items-center">
+<div class="bg-white text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-md mb-1 border border-slate-200">START</div>
+<div class="w-4 h-4 bg-primary border-2 border-white rounded-full shadow-lg"></div>
+</div>
+<!-- End Marker -->
+<div class="absolute top-[90px] left-[790px] flex flex-col items-center">
+<div class="bg-white text-slate-900 text-[10px] font-bold px-2 py-1 rounded shadow-md mb-1 border border-slate-200">END</div>
+<div class="w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-lg"></div>
+</div>
+<!-- Congestion Tooltip -->
+<div class="absolute top-[260px] left-[470px] bg-slate-900/90 border border-red-500/50 p-2 rounded-lg backdrop-blur-sm">
+<div class="flex items-center gap-2 text-red-400">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="text-[11px] font-bold">Heavy Congestion (+12m)</span>
+</div>
+</div>
+</div>
+<!-- Map Overlay UI -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1.5 rounded-lg flex flex-col border border-slate-200 dark:border-slate-800 shadow-lg">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="h-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<button class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-lg text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+<div class="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-lg flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-[11px] font-medium">Fastest</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-3 h-3 rounded-full bg-red-500"></div>
+<span class="text-[11px] font-medium">Congestion</span>
+</div>
+<div class="h-4 w-px bg-slate-300 dark:bg-slate-700"></div>
+<span class="text-[11px] font-bold text-primary italic">AI Route Analysis Active</span>
+</div>
+</div>
+<!-- Statistics Row -->
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Est. Duration</p>
+<p class="text-2xl font-bold mt-1 text-primary">24 <span class="text-sm font-normal text-slate-400">mins</span></p>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Efficiency Score</p>
+<div class="flex items-end gap-1 mt-1">
+<p class="text-2xl font-bold text-emerald-500">92</p>
+<span class="material-symbols-outlined text-emerald-500 text-sm mb-1">trending_up</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">CO2 Saving</p>
+<p class="text-2xl font-bold mt-1 text-slate-400">1.2 <span class="text-sm font-normal">kg</span></p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

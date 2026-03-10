@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Navigator AI - Parking Finder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#020617",
+                        "card-dark": "#1e293b",
+                        "nav-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-nav-dark px-10 py-3 sticky top-0 z-50 shadow-sm">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="route_planner.html">Route Planner</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="traffic_forecast.html">Traffic Forecast</a>
+<a class="text-primary text-sm font-semibold leading-normal border-b-2 border-primary py-1" href="parking_finder.html">Parking Finder</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="analytics.html">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary text-white hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto w-full px-6 py-8 flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-[-0.033em]">Parking Finder</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg font-normal">Real-time parking availability powered by AI in your current vicinity.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Metrics and List Column -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Probability Card -->
+<div class="flex flex-col gap-4 rounded-xl p-6 bg-primary/5 dark:bg-primary/10 border border-primary/20">
+<div class="flex justify-between items-start">
+<p class="text-slate-700 dark:text-slate-300 text-base font-medium">Availability Probability</p>
+<span class="bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-lg">+5% from last hour</span>
+</div>
+<p class="text-primary tracking-tight text-5xl font-black leading-tight">61%</p>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-sm">
+<span class="text-slate-600 dark:text-slate-400">Current Capacity</span>
+<span class="text-slate-900 dark:text-slate-100 font-bold">61% Full</span>
+</div>
+<div class="h-3 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 61%;"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-500 text-xs italic">Moderate availability. Recommended to arrive before 5:00 PM.</p>
+</div>
+</div>
+<!-- Parking Zones List -->
+<div class="flex flex-col gap-4">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight px-1">Nearby Parking Zones</h3>
+<div class="flex flex-col gap-3">
+<!-- Zone Item -->
+<div class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">local_parking</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold">Metro Parking Lot</p>
+<p class="text-slate-500 text-sm">0.4 miles away • 12 spots left</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-bold">85%</p>
+<p class="text-xs text-slate-400">Match</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shopping_bag</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold">City Mall Parking</p>
+<p class="text-slate-500 text-sm">1.2 miles away • 45 spots left</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-bold">92%</p>
+<p class="text-xs text-slate-400">Match</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">business</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold">Central Plaza Garage</p>
+<p class="text-slate-500 text-sm">2.1 miles away • 4 spots left</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-amber-500 font-bold">40%</p>
+<p class="text-xs text-slate-400">Match</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Column -->
+<div class="lg:col-span-2 flex flex-col gap-4">
+<div class="flex justify-between items-center px-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Live Area Map</h3>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-bold hover:brightness-110 transition-colors">
+<span class="material-symbols-outlined text-sm">my_location</span> Recenter
+                            </button>
+</div>
+</div>
+<!-- Map Component -->
+<div class="relative w-full h-[500px] lg:h-full min-h-[400px] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 shadow-xl">
+<div class="absolute inset-0 grayscale opacity-40 dark:invert dark:opacity-20 pointer-events-none" data-alt="Modern dark city map layout with street grids" data-location="San Francisco" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDytqfUa9WjOhZuMQlgvQdg62AQTO3kPwud2KG9sMRmK8W8U80jxiKwpJr8g41m1MdiKB-mksVyi-MO3ou_nOTtq8rl3DmxyIbSLJh7UF4B6vPDWfI-uvYZmppWvXOzcSZevWRtIigJ6L-XDKPiHORt7uXxxnuGwkzqp2DU0rRhg39jGAQ-7qBghYU4xAtQBHUOV_1fJnSd48MJyHvt_RlcS4qSppeSsohVsjyXN8p98t6_emh4Oea48M36gYR7Lpz9-ZDvu9MobUxv'); background-size: cover;"></div>
+<!-- Floating Markers (Mock UI) -->
+<div class="absolute top-[30%] left-[40%] flex flex-col items-center">
+<div class="bg-primary text-white px-2 py-1 rounded-lg text-xs font-bold mb-1 shadow-lg">85% Free</div>
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1">location_on</span>
+</div>
+<div class="absolute top-[50%] left-[65%] flex flex-col items-center">
+<div class="bg-primary text-white px-2 py-1 rounded-lg text-xs font-bold mb-1 shadow-lg">92% Free</div>
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1">location_on</span>
+</div>
+<div class="absolute top-[20%] left-[75%] flex flex-col items-center">
+<div class="bg-amber-500 text-white px-2 py-1 rounded-lg text-xs font-bold mb-1 shadow-lg">40% Free</div>
+<span class="material-symbols-outlined text-amber-500 text-4xl" style="font-variation-settings: 'FILL' 1">location_on</span>
+</div>
+<!-- Map Controls Overlay -->
+<div class="absolute bottom-6 right-6 flex flex-col gap-2">
+<button class="size-10 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-10 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto border-t border-slate-200 dark:border-slate-800 py-8 px-10">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2 text-slate-400 text-sm">
+<span class="material-symbols-outlined text-base">copyright</span>
+                    2024 Urban Navigator AI. All rights reserved.
+                </div>
+<div class="flex gap-6">
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Terms of Service</a>
+<a class="text-slate-400 hover:text-primary transition-colors text-sm" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

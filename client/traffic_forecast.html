@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#020617",
+                        "card-dark": "#1e293b",
+                        "nav-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Urban Navigator AI - Traffic Forecast</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-nav-dark px-10 py-3 sticky top-0 z-50 shadow-sm">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="route_planner.html">Route Planner</a>
+<a class="text-primary text-sm font-semibold leading-normal border-b-2 border-primary py-1" href="traffic_forecast.html">Traffic Forecast</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="parking_finder.html">Parking Finder</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="analytics.html">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary text-white hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-[1280px] mx-auto w-full p-4 md:p-10 flex flex-col gap-6">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">timeline</span>
+<span class="text-xs font-bold uppercase tracking-widest">Real-time Analysis</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-50 text-4xl font-black leading-tight tracking-tight">Traffic Forecast</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg">AI-powered predictive modeling for metropolitan congestion.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-lg font-bold text-sm">Download CSV</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-bold text-sm shadow-lg shadow-primary/30">Update Model</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-slate-200 dark:border-slate-800 overflow-x-auto whitespace-nowrap">
+<button class="px-6 py-3 border-b-2 border-primary text-primary font-bold text-sm">Morning Peak (6AM-11AM)</button>
+<button class="px-6 py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary font-medium text-sm transition-colors">Evening Peak</button>
+<button class="px-6 py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary font-medium text-sm transition-colors">Full Day View</button>
+<button class="px-6 py-3 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-primary font-medium text-sm transition-colors">Weekend Comparison</button>
+</div>
+<!-- Main Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+<!-- Left Sidebar - Status Cards -->
+<div class="lg:col-span-1 flex flex-col gap-4">
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Current Status</p>
+<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">78% Congestion</h3>
+<div class="mt-2 flex items-center gap-2 text-red-500">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="text-sm font-bold">+12% from yesterday</span>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Peak Intensity</p>
+<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">8:45 AM</h3>
+<div class="mt-2 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="text-sm font-bold">High Density Alert</span>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm grow">
+<h4 class="text-sm font-bold mb-4">Congestion Zones</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium">Downtown Core</span>
+<span class="text-xs bg-red-500/10 text-red-500 px-2 py-0.5 rounded font-bold">High</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[88%]"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="text-xs font-medium">Industrial North</span>
+<span class="text-xs bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded font-bold">Medium</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-orange-500 h-full w-[54%]"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="text-xs font-medium">Residential West</span>
+<span class="text-xs bg-green-500/10 text-green-500 px-2 py-0.5 rounded font-bold">Low</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full w-[15%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Chart Section -->
+<div class="lg:col-span-3 flex flex-col gap-6">
+<div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm min-h-[500px] flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-lg font-bold">Predicted Traffic Intensity vs Time</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-green-500"></div>
+<span class="text-xs text-slate-500">Low</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-orange-500"></div>
+<span class="text-xs text-slate-500">Medium</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-red-500"></div>
+<span class="text-xs text-slate-500">High</span>
+</div>
+</div>
+</div>
+<div class="flex-1 relative flex flex-col">
+<!-- Y-Axis Label -->
+<div class="absolute -left-12 top-1/2 -rotate-90 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Traffic Congestion Index
+                                </div>
+<div class="flex-1 w-full border-l border-b border-slate-200 dark:border-slate-800 flex items-end px-4 pb-2 relative group">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+<div class="border-t border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-t border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-t border-slate-100 dark:border-slate-800 w-full h-0"></div>
+<div class="border-t border-slate-100 dark:border-slate-800 w-full h-0"></div>
+</div>
+<!-- Chart SVG -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 400">
+<defs>
+<lineargradient id="lineGradient" x1="0%" x2="0%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#22c55e"></stop>
+<stop offset="50%" stop-color="#f97316"></stop>
+<stop offset="100%" stop-color="#ef4444"></stop>
+</lineargradient>
+<lineargradient id="fillGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#ec5b13" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#ec5b13" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Shaded Area -->
+<path d="M 0 350 Q 150 320 250 150 Q 300 100 350 120 Q 400 150 500 80 Q 600 20 750 150 Q 850 280 1000 320 L 1000 400 L 0 400 Z" fill="url(#fillGradient)"></path>
+<!-- Main Forecast Line -->
+<path d="M 0 350 Q 150 320 250 150 Q 300 100 350 120 Q 400 150 500 80 Q 600 20 750 150 Q 850 280 1000 320" fill="none" stroke="url(#lineGradient)" stroke-linecap="round" stroke-width="5"></path>
+<!-- Peak Indicators -->
+<circle class="animate-pulse" cx="580" cy="30" fill="#ef4444" r="8"></circle>
+<text class="text-[20px] font-bold" fill="#ef4444" x="595" y="30">92% CRITICAL PEAK</text>
+<circle cx="280" cy="120" fill="#f97316" r="6"></circle>
+<text class="text-[16px] font-medium" fill="#f97316" x="295" y="125">Shift Start Peak</text>
+</svg>
+</div>
+<!-- X-Axis Labels -->
+<div class="w-full flex justify-between px-4 mt-4">
+<span class="text-xs font-bold text-slate-500">6 AM</span>
+<span class="text-xs font-bold text-slate-500">7 AM</span>
+<span class="text-xs font-bold text-slate-500">8 AM</span>
+<span class="text-xs font-bold text-slate-900 dark:text-slate-100">9 AM</span>
+<span class="text-xs font-bold text-slate-500">10 AM</span>
+<span class="text-xs font-bold text-slate-500">11 AM</span>
+</div>
+</div>
+</div>
+<!-- Data Insights -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 rounded-xl bg-primary/10 border border-primary/20 flex gap-4">
+<div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-primary">AI Insight</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                                        Congestion is expected to dissipate 15 minutes later than average due to localized rain forecast at 9:30 AM.
+                                    </p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-slate-200/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex gap-4">
+<div class="size-12 rounded-lg bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">map</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold">Active Rerouting</h4>
+<p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                                        4,200 vehicles successfully diverted from North-South arterial to East Corridor via smart signage.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Map Section -->
+<div class="mt-4 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 h-[300px] relative">
+<div class="absolute inset-0 bg-slate-900 flex items-center justify-center">
+<img alt="City map with traffic heat layers" class="w-full h-full object-cover opacity-50 grayscale" data-alt="Dark stylized city map with glowing traffic heatmaps" data-location="Metropolis Central" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIlAHMUADBCtjW0XbIy_UQ4GMjBRg-TrwqP1naUVE4lNrWOGhATqDa4cmaCsMjqkJShJvZUYHjNHl9h3mS6WeVfkQJ5xbwog6y3ClLGhK1sbWR3Rvg_N9Ryx_vPkxJfFcbznBe0OJdBbj1_4kfE3MtVeCjQn8tq9nxjTY2XiEtJNxxIOeIFOcCRd_TPDyKn-R5ou-62UubKol2xyVQr5L7KSlwmDZTsWUBhlMXpi-0ajLvL7z_Krnz7B2bvMWzj6Kn26Dy8uOqRHmv"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+<div class="absolute bottom-6 left-6 flex items-center gap-3">
+<div class="bg-primary px-3 py-1 rounded text-[10px] font-bold text-white uppercase tracking-widest animate-pulse">Live View</div>
+<h4 class="text-white font-bold">Central Business District Heatmap</h4>
+</div>
+<div class="absolute top-6 right-6">
+<button class="bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-lg text-white">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</div>
+</main>
+<footer class="mt-10 border-t border-slate-200 dark:border-slate-800 p-8 text-center">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2024 Urban Navigator AI. Powered by Real-time Traffic Data Services.</p>
+</footer>
+</div>
+</div>
+</body></html>

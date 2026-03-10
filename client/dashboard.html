@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Navigator AI - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#020617",
+                        "card-dark": "#1e293b",
+                        "nav-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-nav-dark px-10 py-3 sticky top-0 z-50 shadow-sm">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Urban Navigator AI</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-primary text-sm font-semibold leading-normal border-b-2 border-primary py-1" href="dashboard.html">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="route_planner.html">Route Planner</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="traffic_forecast.html">Traffic Forecast</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="parking_finder.html">Parking Finder</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="analytics.html">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary text-white hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 px-4 lg:px-20 py-8 max-w-[1440px] mx-auto w-full">
+<div class="mb-8">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Dashboard Overview</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal">AI-powered predictive mobility assistant for your daily commute.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Traffic Level</p>
+<span class="material-symbols-outlined text-red-500">traffic</span>
+</div>
+<p class="text-red-500 tracking-tight text-3xl font-bold leading-tight">High</p>
+<div class="flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-xs text-red-500">trending_up</span>
+<p class="text-red-500 text-xs font-semibold uppercase">+12% from avg</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Est. Travel Time</p>
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">52 min</p>
+<div class="flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-xs text-green-500">trending_down</span>
+<p class="text-green-500 text-xs font-semibold uppercase">-5% optimized</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Best Departure</p>
+<span class="material-symbols-outlined text-blue-400">rocket_launch</span>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">08:03 AM</p>
+<p class="text-slate-400 text-xs font-medium mt-2">Predicted low congestion window</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Parking Availability</p>
+<span class="material-symbols-outlined text-emerald-400">local_parking</span>
+</div>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight">61%</p>
+<div class="flex items-center gap-1 mt-2 w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[61%]"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 flex flex-col gap-4 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Traffic Density Trend</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Predictive real-time density analysis</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">Live</span>
+<span class="px-3 py-1 bg-primary/10 rounded-full text-xs font-bold text-primary">Forecast</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 py-4 min-h-[240px]">
+<svg class="w-full h-full min-h-[180px]" fill="none" preserveaspectratio="none" viewbox="0 0 478 150" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z" fill="url(#paint0_linear)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#ec5b13" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="paint0_linear" x1="236" x2="236" y1="1" y2="149">
+<stop stop-color="#ec5b13" stop-opacity="0.3"></stop>
+<stop offset="1" stop-color="#ec5b13" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between px-2">
+<span class="text-slate-400 text-xs font-bold">06:00</span>
+<span class="text-slate-400 text-xs font-bold">07:00</span>
+<span class="text-slate-400 text-xs font-bold">08:00</span>
+<span class="text-slate-400 text-xs font-bold">09:00</span>
+<span class="text-slate-400 text-xs font-bold">10:00</span>
+<span class="text-slate-400 text-xs font-bold">11:00</span>
+<span class="text-slate-400 text-xs font-bold">12:00</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Quick Route View</h3>
+<div class="relative w-full aspect-square bg-slate-200 dark:bg-slate-700 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-600">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract map layout of a city grid" data-location="New York" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-ulcn_u9UYDK3s1vN9HWc6FAAQykh3X2BQ9YrCGrTbebWQqicClObZWZAiT-1cdgK-vwk02lUNQRrvn6AB7wb_ghbBrQLLoeIjMx1sNgxfOv8zKgTF_yYdXWnTRS73JpJ9IecJFQ8kEZoGzHu0t-GK2tbRHqi8Z0QkE0wpTZvcK1mNvskgI-lifDkULgXlIxQ19R0tJWoA0wh3OMLGW9HVM9B_sbky-t8V6DqbyO-lJaarcOEzewMx4eY4kSzPvwTC7do1n8EXVfJ');"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-full h-full relative">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 100 100">
+<path d="M20,80 Q50,70 80,20" fill="none" stroke="#ec5b13" stroke-dasharray="4 2" stroke-linecap="round" stroke-width="3"></path>
+<circle cx="20" cy="80" fill="#ec5b13" r="3"></circle>
+<circle cx="80" cy="20" fill="#ec5b13" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-3 rounded-lg border border-white/20">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-emerald-500 rounded-full">
+<span class="material-symbols-outlined text-white text-sm">directions_car</span>
+</div>
+<div>
+<p class="text-xs font-bold dark:text-white">Route A Optimized</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400">Via 5th Ave - 12 mins faster</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-2 bg-primary text-white font-bold rounded-lg text-sm hover:opacity-90 transition-all">
+                            Start Navigation
+                        </button>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white font-bold">Traffic Incidents</h3>
+<span class="text-primary text-xs font-bold cursor-pointer hover:underline">View All</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="bg-red-100 dark:bg-red-900/30 p-2 rounded-lg text-red-500">
+<span class="material-symbols-outlined text-base">warning</span>
+</div>
+<div>
+<p class="text-sm font-bold">Construction on I-95 South</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Right lane closed near Exit 4. Expect delays.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-lg text-orange-500">
+<span class="material-symbols-outlined text-base">slow_motion_video</span>
+</div>
+<div>
+<p class="text-sm font-bold">Heavy Traffic: Midtown Tunnel</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Congestion increasing. 15 min additional delay.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-xl p-6 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-slate-900 dark:text-white font-bold">Smart Recommendations</h3>
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
+<span class="material-symbols-outlined text-primary">directions_bus</span>
+<div class="flex-1">
+<p class="text-sm font-bold">Public Transport Alert</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">Subway Line 7 is running 8 mins faster than driving today.</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-blue-400">local_gas_station</span>
+<div class="flex-1">
+<p class="text-sm font-bold">Fuel Efficiency Tip</p>
+<p class="text-xs text-slate-600 dark:text-slate-400">Steady driving at 55mph on Route B saves $4.50 this week.</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto py-6 border-t border-slate-200 dark:border-slate-800 text-center">
+<p class="text-xs text-slate-500 dark:text-slate-500">© 2024 Urban Navigator AI. Powered by Predictive Analytics &amp; Machine Learning.</p>
+</footer>
+</div>
+</div>
+</body></html>
