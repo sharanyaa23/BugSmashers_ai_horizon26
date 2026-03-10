@@ -13,6 +13,36 @@ from departure_optimizer import recommend_departure
 
 router = APIRouter()
 
+# City coordinates for Indian cities
+CITY_COORDINATES = {
+    'Mumbai': {'lat': 19.0760, 'lng': 72.8777},
+    'Pune': {'lat': 18.5204, 'lng': 73.8567},
+    'Nagpur': {'lat': 21.1458, 'lng': 79.0882},
+    'Nashik': {'lat': 19.9975, 'lng': 73.7898},
+    'Aurangabad': {'lat': 19.8762, 'lng': 75.3433},
+    'Thane': {'lat': 19.2183, 'lng': 72.9781}
+}
+
+def generate_waypoints(start_city, end_city, num_points=5):
+    """Generate waypoints between two cities"""
+    start = CITY_COORDINATES.get(start_city, CITY_COORDINATES['Mumbai'])
+    end = CITY_COORDINATES.get(end_city, CITY_COORDINATES['Pune'])
+    
+    waypoints = []
+    for i in range(num_points):
+        ratio = i / (num_points - 1)
+        lat = start['lat'] + (end['lat'] - start['lat']) * ratio
+        lng = start['lng'] + (end['lng'] - start['lng']) * ratio
+        
+        # Add slight variation for alternative routes
+        if i > 0 and i < num_points - 1:
+            lat += random.uniform(-0.02, 0.02)
+            lng += random.uniform(-0.02, 0.02)
+        
+        waypoints.append({'lat': round(lat, 4), 'lng': round(lng, 4)})
+    
+    return waypoints
+
 class RouteRequest(BaseModel):
     start_location: str
     end_location: str
@@ -63,6 +93,10 @@ async def optimize_route(request: RouteRequest):
         
         best_departure = recommend_departure(traffic_predictions)
         
+        # Generate waypoints for the route
+        optimal_waypoints = generate_waypoints(request.start_location, request.end_location, num_points=6)
+        alternative_waypoints = generate_waypoints(request.start_location, request.end_location, num_points=5)
+        
         routes = [
             {
                 'route_id': 'A',
@@ -73,11 +107,7 @@ async def optimize_route(request: RouteRequest):
                 'efficiency_score': 95 if best_departure['Traffic Level'] == 'Low' else 75,
                 'co2_savings': round(random.uniform(1.2, 2.0), 2),
                 'departure_time': best_departure['Departure Time'],
-                'waypoints': [
-                    {'lat': 40.758, 'lng': -73.9855},
-                    {'lat': 40.770, 'lng': -73.975},
-                    {'lat': 40.785, 'lng': -73.968}
-                ]
+                'waypoints': optimal_waypoints
             },
             {
                 'route_id': 'B',
@@ -88,11 +118,7 @@ async def optimize_route(request: RouteRequest):
                 'efficiency_score': random.randint(70, 84),
                 'co2_savings': round(random.uniform(0.5, 1.2), 2),
                 'departure_time': request.arrival_time,
-                'waypoints': [
-                    {'lat': 40.758, 'lng': -73.9855},
-                    {'lat': 40.765, 'lng': -73.980},
-                    {'lat': 40.785, 'lng': -73.968}
-                ]
+                'waypoints': alternative_waypoints
             }
         ]
         

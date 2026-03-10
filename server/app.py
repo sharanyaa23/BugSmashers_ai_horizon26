@@ -30,12 +30,18 @@ app.include_router(traffic_router, prefix="/api/traffic", tags=["Traffic"])
 app.include_router(routing_router, prefix="/api/route", tags=["Routing"])
 app.include_router(parking_router, prefix="/api/parking", tags=["Parking"])
 
-app.mount("/", StaticFiles(directory=r"c:\Users\samma\Desktop\vasai\BugSmashers_ai_horizon26\client", html=True), name="static")
+from pathlib import Path
+
+# Get client directory path relative to this file
+BASE_DIR = Path(__file__).parent.parent
+CLIENT_DIR = BASE_DIR / "client"
+
+app.mount("/", StaticFiles(directory=str(CLIENT_DIR), html=True), name="static")
 
 @app.get("/")
 async def home():
     print("Home called")
-    return FileResponse(r"c:\Users\samma\Desktop\vasai\BugSmashers_ai_horizon26\client\dashboard.html", media_type="text/html")
+    return FileResponse(str(CLIENT_DIR / "dashboard.html"), media_type="text/html")
 
 @app.get("/api/health")
 async def health_check():

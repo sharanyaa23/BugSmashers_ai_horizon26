@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Route Test</title>
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; width: 100%; }
+        body { margin: 0; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px 0; background: #ec5b13; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Route Rendering Test</h2>
+    <button onclick="testRoute()">Draw Mumbai to Pune Route</button>
+    <div id="map"></div>
+
+    <script>
+        let map;
+        
+        // Initialize map
+        map = L.map('map').setView([19.0760, 72.8777], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        console.log('Map initialized');
+
+        function testRoute() {
+            console.log('Drawing test route...');
+            
+            // Mumbai to Pune waypoints
+            const waypoints = [
+                [19.0760, 72.8777],  // Mumbai
+                [18.9, 73.2],        // Midpoint 1
+                [18.7, 73.5],        // Midpoint 2
+                [18.5204, 73.8567]   // Pune
+            ];
+            
+            // Draw orange line
+            const polyline = L.polyline(waypoints, {
+                color: '#ec5b13',
+                weight: 5,
+                opacity: 1.0
+            }).addTo(map);
+            
+            // Fit map to show route
+            map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+            
+            console.log('Route drawn!');
+        }
+    </script>
+</body>
+</html>

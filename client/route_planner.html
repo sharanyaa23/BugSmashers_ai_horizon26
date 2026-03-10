@@ -4,8 +4,11 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="config.js"></script>
 <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -100,14 +103,14 @@
 <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Starting Location</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-3.5 text-slate-400 text-lg">my_location</span>
-<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter origin address..." type="text"/>
+<input id="startLocation" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter origin address..." type="text"/>
 </div>
 </div>
 <div class="relative">
 <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 block">Destination</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-3.5 text-slate-400 text-lg">location_on</span>
-<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter destination..." type="text"/>
+<input id="destLocation" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="Enter destination..." type="text"/>
 </div>
 </div>
 </div>
@@ -139,7 +142,7 @@
 </div>
 </div>
 <!-- CTA -->
-<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group">
+<button id="generateRouteBtn" type="button" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group">
 <span>Generate Smart Route</span>
 <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">bolt</span>
 </button>
@@ -148,11 +151,11 @@
 <!-- Weather/Context Card -->
 <div class="bg-primary/10 border border-primary/20 p-4 rounded-xl flex items-center gap-4">
 <div class="bg-primary/20 p-2 rounded-lg text-primary">
-<span class="material-symbols-outlined">cloud</span>
+<span id="weatherIcon" class="material-symbols-outlined">cloud</span>
 </div>
 <div>
-<p class="text-sm font-semibold">Light rain expected at 09:15</p>
-<p class="text-xs text-slate-500 dark:text-slate-400">AI suggests car for current destination.</p>
+<p id="weatherHeadline" class="text-sm font-semibold">Weather will update for the selected destination.</p>
+<p id="weatherSubtext" class="text-xs text-slate-500 dark:text-slate-400">Generate a route to load destination-aware weather and trip guidance.</p>
 </div>
 </div>
 </div>
@@ -208,18 +211,18 @@
 <div class="grid grid-cols-3 gap-4">
 <div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
 <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Est. Duration</p>
-<p class="text-2xl font-bold mt-1 text-primary">24 <span class="text-sm font-normal text-slate-400">mins</span></p>
+<p id="routeDurationStat" class="text-2xl font-bold mt-1 text-primary">24 <span class="text-sm font-normal text-slate-400">mins</span></p>
 </div>
 <div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-<p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Efficiency Score</p>
+<p id="routeEfficiencyLabel" class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Efficiency Score</p>
 <div class="flex items-end gap-1 mt-1">
-<p class="text-2xl font-bold text-emerald-500">92</p>
-<span class="material-symbols-outlined text-emerald-500 text-sm mb-1">trending_up</span>
+<p id="routeEfficiencyStat" class="text-2xl font-bold text-emerald-500">92</p>
+<span id="routeEfficiencyIcon" class="material-symbols-outlined text-emerald-500 text-sm mb-1">trending_up</span>
 </div>
 </div>
 <div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
 <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">CO2 Saving</p>
-<p class="text-2xl font-bold mt-1 text-slate-400">1.2 <span class="text-sm font-normal">kg</span></p>
+<p id="routeCo2Stat" class="text-2xl font-bold mt-1 text-slate-400">1.2 <span class="text-sm font-normal">kg</span></p>
 </div>
 </div>
 </div>
@@ -229,78 +232,550 @@
 
 <script>
 // API Integration - Member 2 (Traffic) + Member 3 (Departure Optimizer)
-const API_BASE = 'http://localhost:8000/api';
+const APP_CONFIG = window.APP_CONFIG || {};
+const API_BASE = APP_CONFIG.API_BASE_URL || 'http://localhost:8000/api';
+const OPENROUTESERVICE_API_KEY =
+    APP_CONFIG.OPENROUTESERVICE_API_KEY ||
+    window.OPENROUTESERVICE_API_KEY ||
+    localStorage.getItem('OPENROUTESERVICE_API_KEY') ||
+    '';
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+const OPENROUTESERVICE_URL = 'https://api.openrouteservice.org/v2/directions/driving-car/geojson';
+const OPEN_METEO_URL = 'https://api.open-meteo.com/v1/forecast';
+const ROUTE_SESSION_KEY = 'urbanNavigator.route';
 let map;
 let routeLayers = [];
 let congestionSegments = [];
 let parkingMarkers = [];
 
+function saveRouteSession(routeData) {
+    try {
+        sessionStorage.setItem(ROUTE_SESSION_KEY, JSON.stringify(routeData));
+    } catch (error) {
+        console.warn('Could not save route session data.', error);
+    }
+}
+
+function readRouteSession() {
+    try {
+        const rawRouteData = sessionStorage.getItem(ROUTE_SESSION_KEY);
+        return rawRouteData ? JSON.parse(rawRouteData) : null;
+    } catch (error) {
+        console.warn('Could not read route session data.', error);
+        return null;
+    }
+}
+
+function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+function clamp(value, minimum, maximum) {
+    return Math.max(minimum, Math.min(maximum, value));
+}
+
+function haversineDistanceKm(startCoords, endCoords) {
+    const toRadians = value => (value * Math.PI) / 180;
+    const earthRadiusKm = 6371;
+    const deltaLat = toRadians(endCoords.lat - startCoords.lat);
+    const deltaLng = toRadians(endCoords.lng - startCoords.lng);
+    const lat1 = toRadians(startCoords.lat);
+    const lat2 = toRadians(endCoords.lat);
+
+    const a = Math.sin(deltaLat / 2) ** 2
+        + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusKm * c;
+}
+
+function calculateRouteEfficiency(distanceKm, durationMinutes, startLocation, destinationLocation) {
+    if (!distanceKm || !durationMinutes) {
+        return 0;
+    }
+
+    const straightLineDistance = haversineDistanceKm(startLocation, destinationLocation);
+    const routeDirectness = straightLineDistance > 0 ? Number(distanceKm) / straightLineDistance : 1;
+    const averageSpeed = Number(distanceKm) / (durationMinutes / 60);
+    const directnessPenalty = Math.max(0, (routeDirectness - 1) * 55);
+    const speedBonus = clamp((averageSpeed - 22) * 1.8, -12, 12);
+
+    return clamp(Math.round(92 - directnessPenalty + speedBonus), 52, 98);
+}
+
+function calculateCo2Savings(distanceKm, efficiencyScore) {
+    if (!distanceKm || !efficiencyScore) {
+        return 0;
+    }
+
+    const baselineKgPerKm = 0.192;
+    const savingsFactor = clamp((efficiencyScore - 55) / 100, 0.08, 0.38);
+    return Number((Number(distanceKm) * baselineKgPerKm * savingsFactor).toFixed(2));
+}
+
+function formatHourLabel(hourString) {
+    const [hour, minute] = hourString.split(':').map(Number);
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${String(minute).padStart(2, '0')} ${suffix}`;
+}
+
+function getWeatherPresentation(weatherCode) {
+    if ([0].includes(weatherCode)) {
+        return { icon: 'sunny', description: 'Clear skies' };
+    }
+    if ([1, 2].includes(weatherCode)) {
+        return { icon: 'partly_cloudy_day', description: 'Partly cloudy' };
+    }
+    if ([3, 45, 48].includes(weatherCode)) {
+        return { icon: 'cloud', description: 'Cloudy conditions' };
+    }
+    if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode)) {
+        return { icon: 'rainy', description: 'Rain expected' };
+    }
+    if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {
+        return { icon: 'weather_snowy', description: 'Snow conditions' };
+    }
+    if ([95, 96, 99].includes(weatherCode)) {
+        return { icon: 'thunderstorm', description: 'Thunderstorms possible' };
+    }
+    return { icon: 'cloud', description: 'Weather update available' };
+}
+
+async function fetchDestinationWeather(destinationLocation, arrivalTime) {
+    const query = new URLSearchParams({
+        latitude: destinationLocation.lat,
+        longitude: destinationLocation.lng,
+        hourly: 'temperature_2m,weather_code,precipitation_probability',
+        forecast_days: '1',
+        timezone: 'auto'
+    });
+
+    const response = await fetch(`${OPEN_METEO_URL}?${query.toString()}`);
+    if (!response.ok) {
+        throw new Error('Could not load weather data.');
+    }
+
+    const data = await response.json();
+    const hourly = data.hourly || {};
+    const times = hourly.time || [];
+    if (!times.length) {
+        throw new Error('Weather forecast is unavailable for this destination.');
+    }
+
+    const targetHour = Number((arrivalTime || '09:00').split(':')[0]);
+    let bestIndex = 0;
+    let smallestHourDifference = Infinity;
+
+    times.forEach((timeValue, index) => {
+        const forecastHour = new Date(timeValue).getHours();
+        const hourDifference = Math.abs(forecastHour - targetHour);
+        if (hourDifference < smallestHourDifference) {
+            smallestHourDifference = hourDifference;
+            bestIndex = index;
+        }
+    });
+
+    const temperature = hourly.temperature_2m?.[bestIndex];
+    const weatherCode = hourly.weather_code?.[bestIndex];
+    const precipitationProbability = hourly.precipitation_probability?.[bestIndex] ?? 0;
+    const presentation = getWeatherPresentation(weatherCode);
+    const forecastTime = new Date(times[bestIndex]);
+
+    return {
+        icon: presentation.icon,
+        headline: `${presentation.description} near ${destinationLocation.label.split(',')[0]}`,
+        subtext: `Around ${formatHourLabel(forecastTime.toTimeString().slice(0, 5))} expect ${temperature ?? '--'}°C with ${precipitationProbability}% precipitation chance.`,
+        temperature,
+        weatherCode,
+        precipitationProbability,
+        forecastTime: forecastTime.toISOString()
+    };
+}
+
+function updateWeatherCard(weatherDetails, durationMinutes) {
+    const weatherIcon = document.getElementById('weatherIcon');
+    const weatherHeadline = document.getElementById('weatherHeadline');
+    const weatherSubtext = document.getElementById('weatherSubtext');
+
+    if (weatherIcon && weatherDetails.icon) {
+        weatherIcon.textContent = weatherDetails.icon;
+    }
+
+    if (weatherHeadline) {
+        weatherHeadline.textContent = weatherDetails.headline;
+    }
+
+    if (weatherSubtext) {
+        let recommendationText = 'AI suggests bike or car based on current conditions.';
+        if ((weatherDetails.precipitationProbability ?? 0) >= 50) {
+            recommendationText = 'AI suggests car for better weather protection.';
+        } else if ((durationMinutes ?? 0) > 35) {
+            recommendationText = 'AI suggests car for a smoother long ride.';
+        }
+        weatherSubtext.textContent = `${weatherDetails.subtext} ${recommendationText}`;
+    }
+}
+
+function setMetricsLoadingState() {
+    setText('weatherHeadline', 'Checking destination weather...');
+    setText('weatherSubtext', 'Generating route metrics for the selected trip.');
+    setText('routeEfficiencyStat', '--');
+    setText('routeCo2Stat', '-- kg');
+}
+
+// Initialize map immediately
+function initMap() {
+    if (map) {
+        return;
+    }
+    console.log('🗺️ Initializing map...');
+    map = L.map('map').setView([19.0760, 72.8777], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    console.log('✓ Map initialized');
+}
+
+// Initialize map when page loads
+window.addEventListener('load', initMap);
+
 document.addEventListener('DOMContentLoaded', function() {
-    const startInput = document.querySelector('input[placeholder="Enter origin address..."]');
-    const destInput = document.querySelector('input[placeholder="Enter destination..."]');
+    console.log('✓ DOM loaded');
+    
+    const startInput = document.getElementById('startLocation');
+    const destInput = document.getElementById('destLocation');
     const timeInput = document.querySelector('input[type="time"]');
-    const generateBtn = document.querySelector('button.bg-primary');
+    const generateBtn = document.getElementById('generateRouteBtn');
+    const savedRoute = readRouteSession();
     
-    // Add IDs for easier access
-    startInput.id = 'startLocation';
-    destInput.id = 'destLocation';
-    timeInput.id = 'arrivalTime';
+    console.log('Inputs found:', {
+        start: !!startInput,
+        dest: !!destInput,
+        time: !!timeInput,
+        button: !!generateBtn
+    });
     
-    // Initialize interactive map
-    initMap();
+    if (!generateBtn) {
+        console.error('❌ Generate button not found!');
+        return;
+    }
+    
+    if (timeInput) timeInput.id = 'arrivalTime';
+
+    if (savedRoute) {
+        startInput.value = savedRoute.start || '';
+        destInput.value = savedRoute.destination || '';
+
+        if (timeInput && savedRoute.arrivalTime) {
+            timeInput.value = savedRoute.arrivalTime;
+        }
+
+        if (savedRoute.durationMinutes) {
+            updateRouteStats(
+                savedRoute.distanceKm,
+                savedRoute.durationMinutes,
+                savedRoute.efficiencyScore,
+                savedRoute.co2SavingsKg
+            );
+        }
+
+        if (savedRoute.weather) {
+            updateWeatherCard(savedRoute.weather, savedRoute.durationMinutes);
+        }
+    }
+
+    function saveRouteDraft() {
+        saveRouteSession({
+            start: startInput.value.trim(),
+            destination: destInput.value.trim(),
+            arrivalTime: timeInput ? timeInput.value : '',
+            lastUpdated: new Date().toISOString()
+        });
+    }
+
+    startInput.addEventListener('input', saveRouteDraft);
+    destInput.addEventListener('input', saveRouteDraft);
+    if (timeInput) {
+        timeInput.addEventListener('input', saveRouteDraft);
+    }
 
     generateBtn.addEventListener('click', async function(e) {
         e.preventDefault();
         
-        const start = startInput.value || 'Mumbai';
-        const dest = destInput.value || 'Pune';
-        const time = timeInput.value || '09:00';
+        const start = startInput.value.trim();
+        const dest = destInput.value.trim();
+        const arrivalTime = timeInput ? timeInput.value : '';
         
-        console.log('🚀 Button clicked! Fetching route optimization...');
-        console.log('Route:', start, '→', dest, 'at', time);
+        if (!start || !dest) {
+            showErrorMessage('Enter both a starting location and destination.');
+            return;
+        }
         
-        generateBtn.innerHTML = '<span>Analyzing Traffic...</span><span class="material-symbols-outlined animate-spin">refresh</span>';
+        if (!OPENROUTESERVICE_API_KEY) {
+            showErrorMessage('OpenRouteService API key is missing.');
+            return;
+        }
+        
+        console.log('🚀 Button clicked! Generating shortest route...');
+        console.log('Route:', start, '→', dest);
+        saveRouteDraft();
+        setMetricsLoadingState();
+        
+        generateBtn.innerHTML = '<span>Generating Route...</span><span class="material-symbols-outlined animate-spin">refresh</span>';
         generateBtn.disabled = true;
         
         try {
-            console.log('Calling API:', `${API_BASE}/route/optimize`);
-            
-            // Call integrated API (Member 2 + Member 3)
-            const response = await fetch(`${API_BASE}/route/optimize`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    start_location: start,
-                    end_location: dest,
-                    arrival_time: time,
-                    travel_mode: 'car'
-                })
-            });
-            
-            console.log('Response status:', response.status);
-            const data = await response.json();
-            console.log('Response data:', data);
-            
-            if (data.success) {
-                displayResults(data);
-                renderRoutesOnMap(data.routes, data.recommended_route);
-                loadParkingZones(dest);
-                await updateTrafficOverlay(start, dest, data.optimal_departure?.time || time);
-                startRealTimeTrafficUpdates();
-                console.log('✓ Route optimized using ML predictions + Departure optimizer');
-                showSuccessMessage('Route optimized successfully!');
-            } else {
-                console.error('API returned error:', data.error);
-                showErrorMessage('Error: ' + (data.error || 'Could not optimize route'));
-            }
+            await generateShortestRoute(start, dest, arrivalTime);
+            console.log('✓ Shortest route rendered successfully');
+            showSuccessMessage('Shortest route generated successfully!');
         } catch (error) {
-            console.error('API Error:', error);
-            showErrorMessage('Could not connect to API. Server may not be running.');
+            console.error('Route generation error:', error);
+            showErrorMessage(error.message || 'Could not generate route.');
         } finally {
             generateBtn.innerHTML = '<span>Generate Smart Route</span><span class="material-symbols-outlined">bolt</span>';
             generateBtn.disabled = false;
         }
     });
+
+    async function generateShortestRoute(startAddress, destinationAddress, arrivalTime) {
+        if (!map) {
+            initMap();
+        }
+
+        clearCurrentRoute();
+
+        const [startLocation, destinationLocation] = await Promise.all([
+            geocodeLocation(startAddress),
+            geocodeLocation(destinationAddress)
+        ]);
+
+        const routeData = await fetchShortestRoadRoute(startLocation, destinationLocation);
+        let weatherDetails = null;
+
+        try {
+            weatherDetails = await fetchDestinationWeather(destinationLocation, arrivalTime);
+        } catch (weatherError) {
+            console.warn('Weather lookup failed:', weatherError);
+            setText('weatherHeadline', `Route ready for ${destinationLocation.label.split(',')[0]}`);
+            setText('weatherSubtext', 'Weather data is temporarily unavailable, but the route metrics are ready.');
+        }
+
+        drawRoute(routeData, startLocation, destinationLocation, arrivalTime, weatherDetails);
+    }
+
+    async function geocodeLocation(address) {
+        const query = new URLSearchParams({
+            q: address,
+            format: 'jsonv2',
+            limit: '1'
+        });
+
+        const response = await fetch(`${NOMINATIM_URL}?${query.toString()}`, {
+            headers: {
+                'Accept-Language': 'en'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Could not geocode "${address}".`);
+        }
+
+        const results = await response.json();
+
+        if (!Array.isArray(results) || results.length === 0) {
+            throw new Error(`No coordinates found for "${address}".`);
+        }
+
+        const bestMatch = results[0];
+
+        return {
+            label: bestMatch.display_name,
+            lat: Number(bestMatch.lat),
+            lng: Number(bestMatch.lon)
+        };
+    }
+
+    async function fetchShortestRoadRoute(startLocation, destinationLocation) {
+        const response = await fetch(OPENROUTESERVICE_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': OPENROUTESERVICE_API_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                coordinates: [
+                    [startLocation.lng, startLocation.lat],
+                    [destinationLocation.lng, destinationLocation.lat]
+                ],
+                preference: 'shortest'
+            })
+        });
+
+        if (!response.ok) {
+            let errorMessage = 'OpenRouteService could not calculate a route.';
+
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.error?.message || errorData.message || errorMessage;
+            } catch (parseError) {
+                console.warn('Could not parse OpenRouteService error:', parseError);
+            }
+
+            throw new Error(errorMessage);
+        }
+
+        const routeData = await response.json();
+
+        if (!routeData.features || routeData.features.length === 0) {
+            throw new Error('No route was returned for these locations.');
+        }
+
+        return routeData;
+    }
+
+    function drawRoute(routeData, startLocation, destinationLocation, arrivalTime, weatherDetails) {
+        const feature = routeData.features[0];
+        const coordinates = feature.geometry.coordinates;
+        const latLngs = coordinates.map(([lng, lat]) => [lat, lng]);
+        const summary = feature.properties.summary || {};
+
+        const routePolyline = L.polyline(latLngs, {
+            color: '#f97316',
+            weight: 6,
+            opacity: 0.95
+        }).addTo(map);
+
+        const startMarker = L.marker([startLocation.lat, startLocation.lng], {
+            icon: createMarkerIcon('#f97316', 'S')
+        }).addTo(map);
+
+        const destinationMarker = L.marker([destinationLocation.lat, destinationLocation.lng], {
+            icon: createMarkerIcon('#22c55e', 'D')
+        }).addTo(map);
+
+        const distanceKm = summary.distance ? (summary.distance / 1000).toFixed(2) : null;
+        const durationMinutes = summary.duration ? Math.round(summary.duration / 60) : null;
+
+        routePolyline.bindPopup(`
+            <b>Shortest Road Route</b><br>
+            ${distanceKm ? `Distance: ${distanceKm} km<br>` : ''}
+            ${durationMinutes ? `Duration: ${durationMinutes} mins` : ''}
+        `);
+        startMarker.bindPopup(`<b>Start</b><br>${startLocation.label}`);
+        destinationMarker.bindPopup(`<b>Destination</b><br>${destinationLocation.label}`);
+
+        routeLayers.push(routePolyline, startMarker, destinationMarker);
+
+        const efficiencyScore = calculateRouteEfficiency(
+            distanceKm,
+            durationMinutes,
+            startLocation,
+            destinationLocation
+        );
+        const co2SavingsKg = calculateCo2Savings(distanceKm, efficiencyScore);
+
+        updateRouteStats(distanceKm, durationMinutes, efficiencyScore, co2SavingsKg);
+        if (weatherDetails) {
+            updateWeatherCard(weatherDetails, durationMinutes);
+        }
+        updateRouteSummary(startLocation.label, destinationLocation.label, distanceKm, durationMinutes);
+        saveRouteSession({
+            start: document.getElementById('startLocation')?.value.trim() || '',
+            destination: document.getElementById('destLocation')?.value.trim() || '',
+            startLabel: startLocation.label,
+            destinationLabel: destinationLocation.label,
+            startCoords: { lat: startLocation.lat, lng: startLocation.lng },
+            destinationCoords: { lat: destinationLocation.lat, lng: destinationLocation.lng },
+            arrivalTime: arrivalTime || '',
+            distanceKm,
+            durationMinutes,
+            efficiencyScore,
+            co2SavingsKg,
+            weather: weatherDetails || null,
+            routeGeometry: latLngs,
+            lastUpdated: new Date().toISOString()
+        });
+
+        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
+    }
+
+    function clearCurrentRoute() {
+        routeLayers.forEach(layer => {
+            if (map && map.hasLayer(layer)) {
+                map.removeLayer(layer);
+            }
+        });
+        routeLayers = [];
+
+        congestionSegments.forEach(segment => {
+            if (map && map.hasLayer(segment.layer)) {
+                map.removeLayer(segment.layer);
+            }
+        });
+        congestionSegments = [];
+
+        parkingMarkers.forEach(marker => {
+            if (map && map.hasLayer(marker)) {
+                map.removeLayer(marker);
+            }
+        });
+        parkingMarkers = [];
+    }
+
+    function createMarkerIcon(color, label) {
+        return L.divIcon({
+            className: 'custom-marker',
+            html: `
+                <div style="background:${color};width:28px;height:28px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;">
+                    ${label}
+                </div>
+            `,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            popupAnchor: [0, -14]
+        });
+    }
+
+    function updateRouteStats(distanceKm, durationMinutes, efficiencyScore, co2SavingsKg) {
+        const durationEl = document.getElementById('routeDurationStat');
+        if (durationEl && typeof durationMinutes === 'number') {
+            durationEl.innerHTML = `${durationMinutes} <span class="text-sm font-normal text-slate-400">mins</span>`;
+        }
+
+        const efficiencyEl = document.getElementById('routeEfficiencyStat');
+        const efficiencyIcon = document.getElementById('routeEfficiencyIcon');
+        if (efficiencyEl && typeof efficiencyScore === 'number') {
+            efficiencyEl.textContent = efficiencyScore;
+        }
+        if (efficiencyIcon) {
+            efficiencyIcon.textContent = (efficiencyScore ?? 0) >= 80 ? 'trending_up' : 'trending_flat';
+        }
+
+        const co2El = document.getElementById('routeCo2Stat');
+        if (co2El && typeof co2SavingsKg === 'number') {
+            co2El.innerHTML = `${co2SavingsKg.toFixed(2)} <span class="text-sm font-normal">kg</span>`;
+        }
+    }
+
+    function updateRouteSummary(startLabel, destinationLabel, distanceKm, durationMinutes) {
+        const peakInfo = document.getElementById('peakInfo');
+        if (!peakInfo) {
+            return;
+        }
+
+        const summaryParts = [
+            'Shortest route ready',
+            distanceKm ? `${distanceKm} km` : null,
+            durationMinutes ? `${durationMinutes} mins` : null
+        ].filter(Boolean);
+
+        peakInfo.textContent = summaryParts.join(' • ');
+        peakInfo.title = `${startLabel} → ${destinationLabel}`;
+    }
     
     function displayResults(data) {
         console.log('📊 Displaying results...');
@@ -355,58 +830,139 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('🤖 Model:', data.model_info);
     }
 
-    // Initialize Leaflet map centered on Mumbai
-    function initMap() {
-        map = L.map('map').setView([19.0760, 72.8777], 11);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-    }
-
-    // Render optimal + alternative routes as polylines
-    function renderRoutesOnMap(routes, recommendedId) {
-        // Clear previous layers
-        routeLayers.forEach(layer => map.removeLayer(layer));
+    // Render optimal + alternative routes using road-based routing
+    async function renderRoutesOnMap(routes, recommendedId) {
+        console.log('🗺️ renderRoutesOnMap called');
+        console.log('Routes received:', routes);
+        console.log('Map exists:', !!map);
+        
+        if (!map) {
+            console.error('❌ Map not initialized!');
+            setTimeout(() => renderRoutesOnMap(routes, recommendedId), 500);
+            return;
+        }
+        
+        // Clear previous routes
+        routeLayers.forEach(layer => {
+            try {
+                map.removeLayer(layer);
+            } catch(e) {}
+        });
         routeLayers = [];
 
-        routes.forEach(route => {
-            if (!route.waypoints || !route.waypoints.length) return;
+        if (!routes || routes.length === 0) {
+            console.error('❌ No routes to render');
+            return;
+        }
 
-            const latlngs = route.waypoints.map(wp => [wp.lat, wp.lng]);
-            const isRecommended = route.route_id === recommendedId;
+        // Get the recommended route
+        const recommendedRoute = routes.find(r => r.route_id === recommendedId) || routes[0];
+        
+        if (!recommendedRoute.waypoints || recommendedRoute.waypoints.length < 2) {
+            console.error('❌ Recommended route has no waypoints');
+            return;
+        }
 
+        const startPoint = recommendedRoute.waypoints[0];
+        const endPoint = recommendedRoute.waypoints[recommendedRoute.waypoints.length - 1];
+        
+        console.log(`🛣️ Fetching road route from [${startPoint.lat}, ${startPoint.lng}] to [${endPoint.lat}, ${endPoint.lng}]`);
+
+        try {
+            // Try to get road-based route from OSRM
+            const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${startPoint.lng},${startPoint.lat};${endPoint.lng},${endPoint.lat}?overview=full&geometries=geojson`;
+            console.log('Calling OSRM:', osrmUrl);
+            
+            const response = await fetch(osrmUrl);
+            const data = await response.json();
+            
+            if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+                const route = data.routes[0];
+                const coordinates = route.geometry.coordinates;
+                
+                // Convert [lng, lat] to [lat, lng] for Leaflet
+                const latlngs = coordinates.map(coord => [coord[1], coord[0]]);
+                
+                console.log(`✓ OSRM route found: ${latlngs.length} points, ${(route.distance / 1000).toFixed(2)} km`);
+                
+                // Draw the route
+                const polyline = L.polyline(latlngs, {
+                    color: '#ec5b13',
+                    weight: 6,
+                    opacity: 0.9
+                }).addTo(map);
+                
+                polyline.bindPopup(`
+                    <b>${recommendedRoute.name}</b><br>
+                    Distance: ${(route.distance / 1000).toFixed(2)} km<br>
+                    Duration: ${Math.round(route.duration / 60)} mins<br>
+                    Traffic: ${recommendedRoute.traffic_level}
+                `);
+                
+                routeLayers.push(polyline);
+                
+                // Add markers
+                const startMarker = L.marker([startPoint.lat, startPoint.lng], {
+                    icon: L.divIcon({
+                        className: 'custom-marker',
+                        html: '<div style="background: #ec5b13; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [16, 16],
+                        iconAnchor: [8, 8]
+                    })
+                }).addTo(map);
+                startMarker.bindPopup(`<b>Start</b><br>${recommendedRoute.departure_time}`);
+                routeLayers.push(startMarker);
+                
+                const endMarker = L.marker([endPoint.lat, endPoint.lng], {
+                    icon: L.divIcon({
+                        className: 'custom-marker',
+                        html: '<div style="background: #22c55e; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [16, 16],
+                        iconAnchor: [8, 8]
+                    })
+                }).addTo(map);
+                endMarker.bindPopup(`<b>Destination</b><br>Duration: ${recommendedRoute.duration} mins`);
+                routeLayers.push(endMarker);
+                
+                // Fit map to route
+                map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+                console.log('✓ Route rendered successfully');
+                
+            } else {
+                throw new Error('OSRM returned no routes');
+            }
+        } catch (error) {
+            console.warn('⚠️ OSRM routing failed, using simple polyline:', error);
+            
+            // Fallback: draw simple polyline
+            const latlngs = recommendedRoute.waypoints.map(wp => [wp.lat, wp.lng]);
+            
             const polyline = L.polyline(latlngs, {
-                color: isRecommended ? '#ec5b13' : '#38bdf8',
-                weight: isRecommended ? 6 : 4,
-                opacity: isRecommended ? 0.9 : 0.7,
-                dashArray: isRecommended ? '1' : '6 8'
+                color: '#ec5b13',
+                weight: 6,
+                opacity: 0.9
             }).addTo(map);
-
-            const popupHtml = `
-                <div class="text-xs">
-                    <div class="font-bold mb-1">${route.name}</div>
-                    <div>Distance: ${route.distance} km</div>
-                    <div>Duration: ${route.duration} mins</div>
-                    <div>Traffic: ${route.traffic_level}</div>
-                    <div>Departure: ${route.departure_time}</div>
-                    <div>Efficiency: ${route.efficiency_score}</div>
-                </div>
-            `;
-
-            polyline.bindPopup(popupHtml);
-
-            // On click, show quick traffic insight
-            polyline.on('click', () => {
-                showSuccessMessage(`Route ${route.route_id}: ${route.traffic_level.toUpperCase()} traffic • ${route.duration} mins`);
-            });
-
+            
+            polyline.bindPopup(`
+                <b>${recommendedRoute.name}</b><br>
+                Distance: ${recommendedRoute.distance} km<br>
+                Duration: ${recommendedRoute.duration} mins<br>
+                Traffic: ${recommendedRoute.traffic_level}
+            `);
+            
             routeLayers.push(polyline);
-        });
-
-        if (routeLayers.length) {
-            const group = L.featureGroup(routeLayers);
-            map.fitBounds(group.getBounds(), { padding: [40, 40] });
+            
+            // Add markers
+            const startMarker = L.marker([startPoint.lat, startPoint.lng]).addTo(map);
+            startMarker.bindPopup('<b>Start</b>');
+            routeLayers.push(startMarker);
+            
+            const endMarker = L.marker([endPoint.lat, endPoint.lng]).addTo(map);
+            endMarker.bindPopup('<b>Destination</b>');
+            routeLayers.push(endMarker);
+            
+            map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+            console.log('✓ Fallback route rendered');
         }
     }
 
