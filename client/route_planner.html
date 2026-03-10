@@ -242,5 +242,159 @@
 </div>
 </div>
 </div>
+</div>
 </main>
-</body></html>
+
+<script>
+// API Integration - Member 2 (Traffic) + Member 3 (Departure Optimizer)
+const API_BASE = 'http://localhost:8000/api';
+
+document.addEventListener('DOMContentLoaded', function() {
+    const startInput = document.querySelector('input[placeholder="Enter origin address..."]');
+    const destInput = document.querySelector('input[placeholder="Enter destination..."]');
+    const timeInput = document.querySelector('input[type="time"]');
+    const generateBtn = document.querySelector('button.bg-primary');
+    
+    // Add IDs for easier access
+    startInput.id = 'startLocation';
+    destInput.id = 'destLocation';
+    timeInput.id = 'arrivalTime';
+    
+    generateBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        
+        const start = startInput.value || 'Mumbai';
+        const dest = destInput.value || 'Pune';
+        const time = timeInput.value || '09:00';
+        
+        console.log('🚀 Button clicked! Fetching route optimization...');
+        console.log('Route:', start, '→', dest, 'at', time);
+        
+        generateBtn.innerHTML = '<span>Analyzing Traffic...</span><span class="material-symbols-outlined animate-spin">refresh</span>';
+        generateBtn.disabled = true;
+        
+        try {
+            console.log('Calling API:', `${API_BASE}/route/optimize`);
+            
+            // Call integrated API (Member 2 + Member 3)
+            const response = await fetch(`${API_BASE}/route/optimize`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    start_location: start,
+                    end_location: dest,
+                    arrival_time: time,
+                    travel_mode: 'car'
+                })
+            });
+            
+            console.log('Response status:', response.status);
+            const data = await response.json();
+            console.log('Response data:', data);
+            
+            if (data.success) {
+                displayResults(data);
+                console.log('✓ Route optimized using ML predictions + Departure optimizer');
+                showSuccessMessage('Route optimized successfully!');
+            } else {
+                console.error('API returned error:', data.error);
+                showErrorMessage('Error: ' + (data.error || 'Could not optimize route'));
+            }
+        } catch (error) {
+            console.error('API Error:', error);
+            showErrorMessage('Could not connect to API. Server may not be running.');
+        } finally {
+            generateBtn.innerHTML = '<span>Generate Smart Route</span><span class="material-symbols-outlined">bolt</span>';
+            generateBtn.disabled = false;
+        }
+    });
+    
+    function displayResults(data) {
+        console.log('📊 Displaying results...');
+        
+        // Update statistics
+        if (data.optimal_departure) {
+            const durationEl = document.querySelector('.text-2xl.font-bold.mt-1.text-primary');
+            if (durationEl) {
+                durationEl.innerHTML = `${data.optimal_departure.estimated_travel_time} <span class="text-sm font-normal text-slate-400">mins</span>`;
+                durationEl.style.color = '#ec5b13';
+                console.log('✓ Updated duration:', data.optimal_departure.estimated_travel_time, 'mins');
+            }
+            
+            // Show optimal departure time notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-4 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-lg z-50';
+            notification.style.animation = 'slideIn 0.3s ease-out';
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <div>
+                        <p class="font-bold">✓ Optimal Departure: ${data.optimal_departure.time}</p>
+                        <p class="text-sm opacity-90">Traffic: ${data.optimal_departure.traffic_level} • ${data.optimal_departure.estimated_travel_time} mins</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 6000);
+            console.log('✓ Showed notification');
+        }
+        
+        // Update efficiency score
+        if (data.routes && data.routes[0]) {
+            const efficiencyEl = document.querySelector('.text-2xl.font-bold.text-emerald-500');
+            if (efficiencyEl) {
+                efficiencyEl.textContent = data.routes[0].efficiency_score;
+                console.log('✓ Updated efficiency:', data.routes[0].efficiency_score);
+            }
+            
+            const allDurations = document.querySelectorAll('.text-2xl.font-bold.mt-1');
+            if (allDurations.length >= 3) {
+                allDurations[2].innerHTML = `${data.routes[0].co2_savings} <span class="text-sm font-normal">kg</span>`;
+                console.log('✓ Updated CO2 savings:', data.routes[0].co2_savings);
+            }
+        }
+        
+        // Log traffic predictions
+        if (data.traffic_predictions) {
+            console.log('📈 Traffic Predictions:', data.traffic_predictions);
+        }
+        
+        console.log('🤖 Model:', data.model_info);
+    }
+    
+    function showSuccessMessage(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+        toast.textContent = '✓ ' + msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+    
+    function showErrorMessage(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+        toast.textContent = '✗ ' + msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+    
+    // Test on page load
+    console.log('✓ Route Planner JavaScript loaded');
+    console.log('API Base URL:', API_BASE);
+    console.log('Button found:', generateBtn ? 'Yes' : 'No');
+    console.log('Inputs found:', startInput && destInput && timeInput ? 'Yes' : 'No');
+});
+
+// Add CSS animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>

@@ -233,4 +233,45 @@
 </footer>
 </div>
 </div>
+
+<script>
+// Dashboard API Integration - Real-time Traffic Updates
+const API_BASE = 'http://localhost:8000/api';
+
+async function loadTrafficData() {
+    try {
+        const response = await fetch(`${API_BASE}/traffic/current`);
+        const data = await response.json();
+        
+        if (data.success) {
+            updateTrafficStatus(data);
+        }
+    } catch (error) {
+        console.log('Traffic API not available, using static data');
+    }
+}
+
+function updateTrafficStatus(data) {
+    const statusBadge = document.querySelector('.bg-emerald-500.text-white, .bg-yellow-500.text-white, .bg-red-500.text-white');
+    if (statusBadge && data.level) {
+        const levelColors = {
+            'low': 'bg-emerald-500',
+            'medium': 'bg-yellow-500', 
+            'high': 'bg-red-500'
+        };
+        statusBadge.className = `${levelColors[data.level]} text-white px-3 py-1 rounded-full text-xs font-bold`;
+        statusBadge.textContent = data.level.toUpperCase();
+    }
+}
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadTrafficData();
+    // Refresh every 30 seconds
+    setInterval(loadTrafficData, 30000);
+    
+    console.log('✓ Dashboard connected to ML traffic prediction API');
+});
+</script>
+
 </body></html>

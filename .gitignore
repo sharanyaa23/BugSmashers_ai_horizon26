@@ -1,33 +1,20 @@
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+*.pyc
 venv/
 env/
-ENV/
-.venv
+*.egg-info/
 
-# Environment variables
+# Environment
 .env
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
 
 # OS
 .DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Database
-*.db
-*.sqlite3
+Thumbs.db3
 
 # Node modules (if using any frontend build tools)
 node_modules/
