@@ -11,7 +11,7 @@ from routes.parking import router as parking_router
 load_dotenv()
 
 app = FastAPI(
-    title="Urban Navigator AI",
+    title="UrbanFlow AI",
     description="AI-Driven Predictive Urban Navigation and Mobility Optimization System",
     version="1.0.0"
 )

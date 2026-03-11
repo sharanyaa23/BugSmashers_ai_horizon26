@@ -1,0 +1,135 @@
+{
+  "model": "amazon/chronos-t5-small",
+  "evaluation_method": "Time-based holdout using the last 24 hourly points from each city-road_type series",
+  "evaluated_series": 24,
+  "forecast_points": 576,
+  "metrics": {
+    "mae": 4.3751,
+    "rmse": 6.5116,
+    "mape": 11.5519,
+    "accuracy": 0.776,
+    "macro_f1": 0.7648
+  },
+  "series_breakdown": [
+    {
+      "city": "Aurangabad",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Aurangabad",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Aurangabad",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Aurangabad",
+      "road_type": "residential",
+      "points": 24
+    },
+    {
+      "city": "Mumbai",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Mumbai",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Mumbai",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Mumbai",
+      "road_type": "residential",
+      "points": 24
+    },
+    {
+      "city": "Nagpur",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Nagpur",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Nagpur",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Nagpur",
+      "road_type": "residential",
+      "points": 24
+    },
+    {
+      "city": "Nashik",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Nashik",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Nashik",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Nashik",
+      "road_type": "residential",
+      "points": 24
+    },
+    {
+      "city": "Pune",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Pune",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Pune",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Pune",
+      "road_type": "residential",
+      "points": 24
+    },
+    {
+      "city": "Thane",
+      "road_type": "arterial",
+      "points": 24
+    },
+    {
+      "city": "Thane",
+      "road_type": "commercial",
+      "points": 24
+    },
+    {
+      "city": "Thane",
+      "road_type": "highway",
+      "points": 24
+    },
+    {
+      "city": "Thane",
+      "road_type": "residential",
+      "points": 24
+    }
+  ]
+}
