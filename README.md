@@ -74,30 +74,9 @@ At a high level, the app is split into a static frontend and a FastAPI backend.
 
 ### Architecture Flow
 
-```mermaid
-flowchart LR
-    A[Dashboard / Route Planner] --> B[Route saved in sessionStorage]
-    B --> C[Traffic Forecast Page]
-    B --> D[Parking Finder Page]
-    B --> E[Analytics Page]
+![UrbanFlow AI Architecture](docs/screenshots/architecture.jpeg)
 
-    A --> F[FastAPI Backend]
-    F --> G[/api/route/optimize]
-    F --> H[/api/traffic/predict]
-    F --> I[/api/parking/predict]
-
-    G --> J[Departure Optimizer]
-    H --> K[Chronos-based Traffic Service]
-    I --> L[Destination-aware Parking Generator]
-
-    A --> M[Nominatim]
-    A --> N[OpenRouteService]
-    A --> O[Open-Meteo]
-    H --> P[Groq]
-
-    K --> Q[traffic_features.csv]
-    K --> R[traffic_predictions.csv]
-```
+The frontend pages collect trip inputs, render maps with Leaflet, and share the active route through `sessionStorage`. The FastAPI backend handles traffic and parking APIs, while the AI/ML layer uses Chronos T5 for traffic forecasting, heuristic parking logic for recommendation, and external services like Nominatim, OpenRouteService, Open-Meteo, and Groq where needed.
 
 ## Repository Structure
 
