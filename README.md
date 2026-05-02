@@ -381,4 +381,3 @@ That continuity makes the project feel like one product instead of a set of disc
 
 ---
 
-If you use this repository on GitHub, the README will look best once you add 4 to 5 screenshots under a `docs/screenshots/` folder and reference them in the screenshots section above.
